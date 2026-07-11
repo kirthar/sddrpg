@@ -13,6 +13,21 @@ allowed actions, class-specific limit breaks, open to future class progression),
 archetypes/roles as data (affecting AI profile and reward/difficulty), stats, and
 elemental affinities — all defined as data, all participating in the same battle rules."
 
+## Clarifications
+
+### Session 2026-07-11
+
+- Q: Is the stat catalog fixed by the engine or data-defined per game? → A: Hybrid — the
+  engine defines a mandatory core stat set (HP, MP, Attack, Defense, Magic, Resistance,
+  Speed, Luck) that formulas may always assume present; catalogs may declare additional
+  custom stats referencable by content.
+- Q: What is the leveling scope for this feature? → A: Characters instantiate at a given
+  level and stats derive deterministically from the class growth curve at that level;
+  XP gain and level-up mechanics are deferred to a later rewards/progression feature.
+- Q: Is equipment in scope? → A: Only restriction categories: classes declare named
+  equipment categories they may use; equipment items and their stat effects are a future
+  feature that will honor these categories.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Define playable characters through classes (Priority: P1)
@@ -142,24 +157,28 @@ configured decision sources.
   data entries — never engine code changes (per constitution Principle II).
 - **FR-008**: Every combatant MUST carry a stat block of named numeric attributes with
   defined bounds (no negative values; current resource values never exceed their maxima).
-  The stat catalog itself is defined once and shared by all combatant kinds.
-  [NEEDS CLARIFICATION: Is the stat catalog fixed by the engine (e.g., HP/MP/Strength/
-  Defense/Magic/Resistance/Speed/Luck) or an open, data-defined registry where each game
-  declares its own stats?]
+  The stat catalog is hybrid: the engine defines a mandatory core stat set — HP, MP,
+  Attack, Defense, Magic, Resistance, Speed, Luck — guaranteed present on every
+  combatant, and a catalog MAY declare additional named custom stats, which are then
+  referencable by content and validated like any other cross-reference.
+- **FR-008a**: Playable characters MUST be instantiable at a given level, with their
+  effective base stats derived deterministically from their class's growth curve at that
+  level (same class + same level + same individual modifiers ⇒ same stats).
 - **FR-009**: Every combatant MAY declare elemental affinities per element on a scale of
   weakness / neutral / resistance / immunity / absorption. Affinity data lives in this
   model; the arithmetic of applying it belongs to the damage-resolution feature.
 - **FR-010**: Classes MUST be identifiable such that other content can reference class
   combinations (e.g., a future synergy "Warrior + Mage combined attack") and class
   membership can gate content (class-specific limit breaks).
-- **FR-011**: Character stat growth curves MUST be part of the class definition.
-  [NEEDS CLARIFICATION: Does v1 include experience/leveling progression mechanics, or are
-  growth curves stored as data while progression (gaining levels mid- or post-battle)
-  stays out of scope until a later feature?]
-- **FR-012**: Class definitions MUST express equipment/weapon restrictions.
-  [NEEDS CLARIFICATION: Is equipment itself (items, weapons, their effects on stats) part
-  of this feature's scope, or does this feature only define the restriction categories
-  that a future equipment feature will honor?]
+- **FR-011**: Character stat growth curves MUST be part of the class definition and MUST
+  yield the character's stats for any given level (FR-008a). Experience gain and
+  level-up mechanics are out of scope for this feature and belong to a later
+  rewards/progression feature.
+- **FR-012**: Class definitions MUST express equipment/weapon restrictions as named
+  equipment categories (e.g., "swords", "staves", "heavy armor") declared in the catalog
+  and validated like any other cross-reference. Equipment items themselves — and their
+  effects on stats — are out of scope for this feature; a future equipment feature will
+  honor these categories.
 - **FR-013**: All cross-references between definitions (character→class, class→skill,
   class→limit break, enemy→archetype, archetype→AI profile) MUST be validated when a
   catalog is loaded, before any battle starts, producing errors that name the offending
@@ -223,6 +242,9 @@ configured decision sources.
   AI strategies).
 - Reward/difficulty tiers are opaque labels/values at this stage; the economy that
   consumes them (drops, experience) is a later feature.
+- Definitions are templates: a battle roster instantiates combatants from definitions,
+  and multiple instances of the same definition (e.g., three Goblins) receive distinct
+  battle identities while sharing the definition's data.
 - Class progression (job systems, promotions) is out of scope for v1 gameplay, but the
   model keeps the character→class reference mutable so progression can be added without
   reworking the model (constitution Principle V).

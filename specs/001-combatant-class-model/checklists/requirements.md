@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain
+- [x] No [NEEDS CLARIFICATION] markers remain
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -31,10 +31,8 @@
 
 ## Notes
 
-- 3 [NEEDS CLARIFICATION] markers remain, intentionally deferred to the dedicated
-  `/speckit-clarify` phase (project decision: exercise the full SDD flow explicitly):
-  1. FR-008 — stat catalog: engine-fixed set vs data-defined open registry.
-  2. FR-011 — v1 scope of experience/leveling progression vs stored-only growth curves.
-  3. FR-012 — equipment scope: restriction categories only, or equipment entities too.
-- All other items pass. Spec is ready for `/speckit-clarify`; do not run `/speckit-plan`
-  until the three markers are resolved.
+- The 3 [NEEDS CLARIFICATION] markers were resolved in the `/speckit-clarify` session of
+  2026-07-11 (see the spec's Clarifications section): hybrid stat catalog (core set +
+  custom stats), level-derived stats without XP mechanics, and equipment restricted to
+  named categories only.
+- All items pass. Spec is ready for `/speckit-plan`.
