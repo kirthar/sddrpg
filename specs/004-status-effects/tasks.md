@@ -147,7 +147,7 @@ never receives a turn while active, and resumes once the effect ends.
 
 ### Tests for User Story 3 (write first, must fail) ⚠️
 
-- [ ] T014 [US3] Write failing tests for US3 scenarios 1–3 (an incapacitated
+- [X] T014 [US3] Write failing tests for US3 scenarios 1–3 (an incapacitated
       combatant's effective Speed is 0; fed into
       `ActiveTimeBattleScheduler.nextTurn` it is never the one reported ready; once the
       effect ends — removed via a tick reaching 0 — normal scheduling resumes for that
@@ -160,7 +160,7 @@ never receives a turn while active, and resumes once the effect ends.
 
 ### Implementation for User Story 3
 
-- [ ] T015 [US3] Extend `deriveEffectiveBattleState` to force effective Speed to `0`
+- [X] T015 [US3] Extend `deriveEffectiveBattleState` to force effective Speed to `0`
       when an `Incapacitate`-kind effect is active on a participant — a final clamp
       applied after any stat-modifier summation, not itself a summed delta, so it
       cannot be offset by a simultaneous Speed-increasing modifier (research R5,

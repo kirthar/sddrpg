@@ -2,6 +2,7 @@ package io.github.kirthar.sddrpg.core.status
 
 import io.github.kirthar.sddrpg.core.action.BattleState
 import io.github.kirthar.sddrpg.core.model.CombatantId
+import io.github.kirthar.sddrpg.core.model.CoreStats
 import io.github.kirthar.sddrpg.core.model.StatBlock
 
 /** Applies [effectId]'s definition to [combatantId]: adds it, or refreshes duration to full if already active (spec FR-008). */
@@ -83,12 +84,16 @@ fun deriveEffectiveBattleState(
         val deltasByStat = kinds.filterIsInstance<EffectKind.StatModifier>()
             .groupBy { it.statId }
             .mapValues { (_, modifiers) -> modifiers.sumOf { it.delta } }
+        val incapacitated = kinds.any { it is EffectKind.Incapacitate }
 
-        if (deltasByStat.isEmpty()) return@map participant
+        if (deltasByStat.isEmpty() && !incapacitated) return@map participant
 
         val base = participant.combatant.stats
         val adjusted = base.statIds.associateWith { statId ->
-            (base[statId] + (deltasByStat[statId] ?: 0)).coerceAtLeast(0)
+            val summed = (base[statId] + (deltasByStat[statId] ?: 0)).coerceAtLeast(0)
+            // Incapacitation is a final clamp, not a summed delta, so a simultaneous
+            // Speed-increasing modifier can never offset it (research R5).
+            if (incapacitated && statId == CoreStats.SPEED) 0 else summed
         }
         participant.copy(combatant = EffectiveCombatant(participant.combatant, StatBlock(adjusted)))
     }
