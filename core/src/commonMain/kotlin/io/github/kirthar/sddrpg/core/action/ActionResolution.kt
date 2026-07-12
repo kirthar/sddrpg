@@ -1,6 +1,7 @@
 package io.github.kirthar.sddrpg.core.action
 
 import io.github.kirthar.sddrpg.core.catalog.CommandKind
+import io.github.kirthar.sddrpg.core.combatant.Allegiance
 import io.github.kirthar.sddrpg.core.model.Affinity
 import io.github.kirthar.sddrpg.core.model.CombatantId
 import io.github.kirthar.sddrpg.core.model.SkillId
@@ -59,9 +60,14 @@ fun resolveAction(
         }
     }
 
+    val resolvedTargets = resolveTargets(state, actor, action.targeting, targetIds)
+        ?: return ActionResolutionResult.Rejected(
+            ActionError.TargetShapeMismatch(action.targeting, "target selection does not match ${action.targeting}")
+        )
+
     val outcomes = mutableListOf<ResolutionOutcome>()
     var newState = state
-    for (targetId in targetIds) {
+    for (targetId in resolvedTargets) {
         val target = newState.find(targetId)!!
         val rawMagnitude = action.formula.rawMagnitude(actor.combatant.stats, target.combatant.stats)
         val baseDelta = if (action.effectKind == EffectKind.DAMAGE) -rawMagnitude else rawMagnitude
@@ -79,4 +85,52 @@ fun resolveAction(
     }
 
     return ActionResolutionResult.Resolved(newState, outcomes)
+}
+
+/**
+ * Validates [targetIds] against [shape] and resolves the final id list to affect
+ * (research R6). For `SINGLE_*`/`SELF`, the caller's explicit selection must match the
+ * shape exactly, including cardinality — an explicitly-selected defeated combatant is
+ * a mismatch, not a silent exclusion. For `ALL_*`, an empty [targetIds] auto-selects
+ * the full matching scope; a non-empty one is validated as the caller's subset. Either
+ * way, already-defeated combatants are excluded from the final `ALL_*` result without
+ * failing the match (spec FR-009). Returns `null` on any mismatch.
+ */
+private fun resolveTargets(
+    state: BattleState,
+    actor: BattleCombatant,
+    shape: TargetingShape,
+    targetIds: Set<CombatantId>,
+): List<CombatantId>? {
+    val actorId = actor.combatant.id
+    val allegiance = actor.combatant.allegiance
+
+    fun sameAllegiance() = state.participants.filter { it.combatant.allegiance == allegiance }.map { it.combatant.id }
+    fun oppositeAllegiance() = state.participants.filter { it.combatant.allegiance != allegiance }.map { it.combatant.id }
+
+    return when (shape) {
+        TargetingShape.SELF -> {
+            if (targetIds != setOf(actorId)) null else listOf(actorId)
+        }
+        TargetingShape.SINGLE_ALLY -> {
+            val id = targetIds.singleOrNull() ?: return null
+            if (id !in sameAllegiance() || state.find(id)!!.isDefeated) null else listOf(id)
+        }
+        TargetingShape.SINGLE_ENEMY -> {
+            val id = targetIds.singleOrNull() ?: return null
+            if (id !in oppositeAllegiance() || state.find(id)!!.isDefeated) null else listOf(id)
+        }
+        TargetingShape.ALL_ALLIES -> resolveAllShape(state, targetIds, sameAllegiance())
+        TargetingShape.ALL_ENEMIES -> resolveAllShape(state, targetIds, oppositeAllegiance())
+        TargetingShape.ALL -> resolveAllShape(state, targetIds, state.participants.map { it.combatant.id })
+    }
+}
+
+/** Shared "all" logic: empty selection means the full scope; a non-empty one is the caller's subset. */
+private fun resolveAllShape(state: BattleState, targetIds: Set<CombatantId>, scope: List<CombatantId>): List<CombatantId>? {
+    val candidates = if (targetIds.isEmpty()) scope else {
+        if (!scope.containsAll(targetIds)) return null
+        targetIds.toList()
+    }
+    return candidates.filterNot { state.find(it)!!.isDefeated }
 }

@@ -152,7 +152,7 @@ not, with one outcome per affected enemy.
 
 ### Tests for User Story 3 (write first, must fail) ⚠️
 
-- [ ] T016 [P] [US3] Write failing tests for US3 scenarios 1–6 (single-target
+- [X] T016 [P] [US3] Write failing tests for US3 scenarios 1–6 (single-target
       cardinality mismatch rejected; `SELF` rejects any non-actor target; `ALL_ENEMIES`
       fans out to every opposing combatant with one outcome each; unknown target id
       rejected naming it; an already-defeated combatant excluded from an "all" shape
@@ -163,7 +163,7 @@ not, with one outcome per affected enemy.
 
 ### Implementation for User Story 3
 
-- [ ] T017 [US3] Implement target-set resolution against `TargetingShape` and
+- [X] T017 [US3] Implement target-set resolution against `TargetingShape` and
       allegiance (shape/cardinality validation → `ActionError.TargetShapeMismatch`,
       unknown-id detection → `ActionError.UnknownTarget`, defeated-exclusion for
       `ALL_*` shapes) in `MAIN/ActionResolution.kt`, wired into `resolveAction` ahead
