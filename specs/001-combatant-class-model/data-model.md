@@ -66,6 +66,7 @@ the known-ID sets with real definitions without changing referencing content.
 | id | EnemyId | unique |
 | displayName | String | opaque |
 | archetypeId | ArchetypeId | must exist |
+| skills | Set\<SkillId\> | optional, default empty; each must exist in knownSkills |
 | stats | StatBlock | complete core set |
 | affinities | Map\<ElementId, Affinity\> | keys must exist in elements; absent ⇒ NEUTRAL |
 
@@ -90,7 +91,7 @@ the known-ID sets with real definitions without changing referencing content.
 | allegiance | Allegiance | PLAYER \| OPPONENT — independent axis from kind |
 | stats | StatBlock | characters: `statsAt(class, level, baseStats)` (FR-008a); enemies: definition stats |
 | affinities | Map\<ElementId, Affinity\> | from definition; missing ⇒ NEUTRAL |
-| capabilities | CapabilitySet | **derived through the class reference at read time** (R1): skills, commands, limitBreaks from active class; enemies: derived from archetype (aiProfile) |
+| capabilities | CapabilitySet | **derived through the class reference at read time** (R1): skills, commands, limitBreaks from active class; enemies: skills from their definition + AI profile from archetype |
 | decisionSource | DecisionSource | Human \| AiProfile(id); mutable independently (SC-004) |
 | level | Int? | characters only; ≥ 1 |
 | activeClassId | ClassId? | characters only; swappable to any valid class (SC-005) |

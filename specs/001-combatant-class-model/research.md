@@ -102,7 +102,8 @@ levels — rejected as sole option).
 **Decision**: Two-phase load. Phase A: deserialize JSON into raw definition lists.
 Phase B: validate the whole catalog, **accumulating** all errors (duplicate IDs across
 each namespace, dangling references character→class, class→skill/limitBreak/
-equipmentCategory/statId, enemy→archetype, archetype→aiProfile, affinity→element)
+equipmentCategory/statId, enemy→archetype, enemy→skill, archetype→aiProfile,
+affinity→element)
 and returning either a validated immutable `Catalog` or the complete error list —
 never a partially valid catalog, never fail-fast on the first error.
 

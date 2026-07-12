@@ -113,6 +113,7 @@ them; strict parsing — unknown keys are errors):
       "id": "bomb",
       "displayName": "Bomb",
       "archetypeId": "boss",
+      "skills": ["fira"],
       "stats": { "hp": 300, "mp": 50, "attack": 14, "defense": 8,
                   "magic": 12, "resistance": 6, "speed": 7, "luck": 3 },
       "affinities": { "fire": "ABSORPTION", "ice": "WEAKNESS" }

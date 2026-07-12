@@ -92,7 +92,7 @@ fixture, load + validate, assert each exposes its archetype's AI profile and tie
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
 - [ ] T019 [P] [US2] Write failing serialization round-trip tests for `ArchetypeDefinition` + `EnemyDefinition` (contract examples incl. `ABSORPTION`/`WEAKNESS` affinities) in `TEST/catalog/EnemySerializationTest.kt`
-- [ ] T020 [P] [US2] Write failing acceptance + validation tests for US2 scenarios 1–3 plus enemy→archetype and archetype→aiProfile dangling refs, duplicate ArchetypeId/EnemyId, rewardTier ≥ 0 (extend fixtures, not files, of T012) in `TEST/catalog/ArchetypeTest.kt`
+- [ ] T020 [P] [US2] Write failing acceptance + validation tests for US2 scenarios 1–3 plus enemy→archetype, enemy→skill and archetype→aiProfile dangling refs, duplicate ArchetypeId/EnemyId, rewardTier ≥ 0, optional enemy skills default empty (extend fixtures, not files, of T012) in `TEST/catalog/ArchetypeTest.kt`
 
 ### Implementation for User Story 2
 
@@ -121,7 +121,7 @@ configured decision sources.
 
 ### Implementation for User Story 3
 
-- [ ] T026 [US3] Implement `Combatant` (kind, allegiance, `CapabilitySet` derived through active class/archetype at read time, `DecisionSource`, `affinityTo` total lookup) + `withActiveClass`/`withDecisionSource` copies in `MAIN/combatant/Combatant.kt`
+- [ ] T026 [US3] Implement `Combatant` (kind, allegiance, `CapabilitySet` derived at read time — characters: through active class; enemies: definition skills + archetype AI profile —, `DecisionSource`, `affinityTo` total lookup) + `withActiveClass`/`withDecisionSource` copies in `MAIN/combatant/Combatant.kt`
 - [ ] T027 [US3] Implement `RosterBuilder`/`Roster` (addPartyMember/addEnemy/addTemporaryAlly per contract; deterministic ids; level ≥ 1 for characters) in `MAIN/combatant/Roster.kt`
 
 **Checkpoint**: all three stories independently green.

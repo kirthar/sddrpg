@@ -152,7 +152,9 @@ configured decision sources.
   without redefining the character; v1 gameplay uses fixed classes only.
 - **FR-006**: Enemy archetypes MUST be authorable as data. An archetype determines: an AI
   behavior profile reference and a reward/difficulty tier. Enemies reference an archetype
-  plus their individual stats and affinities.
+  plus their individual stats and affinities, and MAY declare an individual skill set
+  (empty by default) listing the actions available to them; how an AI selects among them
+  is later features' scope.
 - **FR-007**: Adding a new class, character, enemy, or archetype MUST require only new
   data entries — never engine code changes (per constitution Principle II).
 - **FR-008**: Every combatant MUST carry a stat block of named numeric attributes with
@@ -161,6 +163,9 @@ configured decision sources.
   Attack, Defense, Magic, Resistance, Speed, Luck — guaranteed present on every
   combatant, and a catalog MAY declare additional named custom stats, which are then
   referencable by content and validated like any other cross-reference.
+  The current-vs-maximum rule is declared here as a model invariant and is enforced once
+  battle state exists (later features); no battle-time resource tracking is built in this
+  feature.
 - **FR-008a**: Playable characters MUST be instantiable at a given level, with their
   effective base stats derived deterministically from their class's growth curve at that
   level (same class + same level + same individual modifiers ⇒ same stats).
