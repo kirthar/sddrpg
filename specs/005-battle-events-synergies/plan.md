@@ -66,8 +66,9 @@ defines the event/synergy mechanism only — no specific synergy catalog content
 
 **Post-design re-check (after Phase 1)**: all five gates still pass. The `event`
 package is additive; zero changes to any spec 001–004 file — verified directly against
-spec 001's `Combatant.kt` source during research (R1), which is what drove the
-skill-based (not classId-based) synergy design. No Complexity Tracking entries needed.
+spec 001's `Combatant.kt` source during the specify/plan transition (see spec.md's
+Assumptions), which is what drove the skill-based (not classId-based) synergy design.
+No Complexity Tracking entries needed.
 
 ## Project Structure
 

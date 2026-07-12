@@ -28,7 +28,7 @@ adds one package (`event`) to the existing `core` module and reuses spec 002's
 | US1 scenario 6 (turn granted) | `event/EventDerivationTest`, via `eventsFromSchedule` |
 | US1 scenario 7 (log only grows, never reorders) | `event/EventLogTest` |
 | US2 scenarios 1–4 (synergy triggers / window miss / target mismatch / same-combatant rejection) | `event/SynergyResolutionTest` |
-| US2 scenario 5 (bonus damage respects health bounds) | `event/SynergyResolutionTest`, backed by `event/SynergyBonusClampTest` (0/maximum boundary) |
+| US2 scenario 5 (bonus damage respects health bounds) | `event/SynergyResolutionTest` (0/maximum boundary asserted alongside the trigger scenarios) |
 | US3 (multiple independent synergies coexist) | `event/MultipleSynergiesTest` |
 | US4 (synergy trigger is its own event) | `event/SynergyTriggeredEventTest` |
 | FR-004/FR-007 (catalog validation, accumulate-all) | `event/SynergyCatalogValidationTest` |

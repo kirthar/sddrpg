@@ -144,18 +144,20 @@ window, and verify the synergy's bonus effect is applied automatically.
       `BonusDamage` bonus decreases the target's health within the same `[0, maximum]`
       bounds every other damage application respects) via `detectSynergyTriggers` +
       `applySynergyBonus` in `TEST/SynergyResolutionTest.kt`
-- [ ] T015 [P] [US2] Write failing test for FR-005's nearest-prior-match rule (research
+- [ ] T015 [US2] Write failing test for FR-005's nearest-prior-match rule (research
       R3): three qualifying events on the same target within the window — two eligible
       partners for a later closing event — assert the *nearest* prior eligible event
       wins the pairing, not the first-in-log or an arbitrary one, in
-      `TEST/SynergyResolutionTest.kt`
-- [ ] T016 [P] [US2] Write failing tests for the window boundary (research R5: a
+      `TEST/SynergyResolutionTest.kt` (extends T014's file — write after T014, not in
+      parallel, to avoid both tasks editing the same new file at once)
+- [ ] T016 [US2] Write failing tests for the window boundary (research R5: a
       partner exactly `window` turns earlier still triggers; one turn beyond does not)
       and the edge cases from spec.md (a synergy's window expiring with no second
       qualifying action produces no trigger and no error; a combatant defeated after
       supplying one half can still have that recorded event pair with a later
       qualifying event from a different combatant; an empty `SynergyCatalog` never
-      triggers anything) in `TEST/SynergyResolutionTest.kt`
+      triggers anything) in `TEST/SynergyResolutionTest.kt` (follows T015 in the same
+      file)
 - [ ] T017 [P] [US2] Write failing test extending `TEST/DefeatedEventTest.kt` (started
       in US1/T007) for the synergy-bonus source: a `BonusDamage` that brings health to
       exactly 0 produces a `CombatantDefeated` event via `eventsFromSynergyBonus`
@@ -281,8 +283,9 @@ T020, T023, T025 in sequence — do not parallelize tasks against the same file.
 ### Parallel Opportunities
 
 - T006–T007 (US1 tests) are parallel — different files, and both independent of T005.
-- T013, T015, T016, T017 (US2 tests) are parallel — different files (T017 extends a
-  US1 file but adds a new test, not touching T007's existing tests).
+- T013 and T017 (US2 tests) are parallel — different files (T017 extends a US1 file
+  but adds a new test, not touching T007's existing tests). T014–T016 all write to
+  `TEST/SynergyResolutionTest.kt` and must be done in that order, not in parallel.
 - T026–T027 (polish tests) are parallel.
 
 ---
