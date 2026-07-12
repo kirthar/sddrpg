@@ -20,7 +20,7 @@ adds one package (`status`) to the existing `core` module and reuses spec 002's
 | Spec item | Validation |
 |---|---|
 | US1 (apply/track/tick/expire lifecycle, scenarios 1–4) | `status/StatusEffectLifecycleTest` |
-| US2 (stat-modifying effect changes resolution, scenarios 1–4) | `status/StatModifierTest`: resolves an attack through the effective `BattleState` |
+| US2 (stat-modifying effect changes resolution, scenarios 1–4) | `status/StatModifierTest`: resolves an attack through the effective `BattleState`, backed by `status/EffectiveCombatantTest` (delegation correctness — only `stats` overridden) |
 | US3 (incapacitation excludes scheduling, scenarios 1–3) | `status/IncapacitateTest`: effective Speed forced to 0, fed into `ActiveTimeBattleScheduler.nextTurn` |
 | US4 (damage-over-time, scenarios 1–3) | `status/DamageOverTimeTest` |
 | US5 (reapplication refreshes duration, scenarios 1–2) | `status/ReapplicationTest` |
@@ -28,7 +28,7 @@ adds one package (`status`) to the existing `core` module and reuses spec 002's
 | FR-007 (uniform tick rule) | `status/TickTimingTest`: a still-incapacitated combatant's own effect still ticks down even though it never gets a turn |
 | FR-008 (refresh, no stacking) | `status/ReapplicationTest` |
 | FR-010/SC-007 (determinism) | `status/StatusDeterminismTest`: property test over apply/tick/remove sequences |
-| FR-011 (specs 001–003 contracts untouched) | no dedicated test needed — `EffectiveCombatant` only implements the existing public `Combatant` interface via delegation; compilation itself is the proof (no source changes to `model`/`combatant`/`action`/`schedule`/`catalog` packages) |
+| FR-011 (specs 001–003 contracts untouched) | `status/StatusContractTest`: a participant with no active effects is returned byte-identical (same `Combatant` reference); also compilation itself is partial proof — no source changes to `model`/`combatant`/`action`/`schedule`/`catalog` packages |
 | Edge cases (non-positive duration, stat floor, idempotent removal) | `status/StatusEffectCatalogValidationTest`, `status/StatModifierTest`, `status/StatusEffectLifecycleTest` |
 
 ## Expected outcome

@@ -231,22 +231,22 @@ than adding to it, with unchanged stat-modifier magnitude.
 
 ## Phase 8: Polish & Cross-Cutting Concerns
 
-- [ ] T020 [P] Add a specs-001–003-contract-preservation test: a participant with no
+- [X] T020 [P] Add a specs-001–003-contract-preservation test: a participant with no
       active effects is returned byte-identical (same `Combatant` reference) by
       `deriveEffectiveBattleState` (FR-011) in `TEST/StatusContractTest.kt`
-- [ ] T021 [P] Add a cross-cutting determinism property test: the same starting
+- [X] T021 [P] Add a cross-cutting determinism property test: the same starting
       `StatusEffectState`/`BattleState` and the same sequence of apply/tick/remove
       calls, replayed twice, produce structurally identical results (SC-007) in
       `TEST/StatusDeterminismTest.kt`
-- [ ] T021a [P] Add an edge-case test + guard: `tickStatusEffects`/
+- [X] T021a [P] Add an edge-case test + guard: `tickStatusEffects`/
       `deriveEffectiveBattleState` given a `StatusEffectState` referencing a
       `StatusEffectId` absent from the passed-in `StatusEffectCatalog` skips that
       stale reference gracefully rather than crashing (analyze finding F2 — behavior
       was previously undefined) in `TEST/StatusEffectLifecycleTest.kt`, implemented in
       `MAIN/StatusEffectResolution.kt`
-- [ ] T022 KDoc pass on all public `status` package files (surface listed in
+- [X] T022 KDoc pass on all public `status` package files (surface listed in
       contracts/status-api.md)
-- [ ] T023 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;
+- [X] T023 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;
       update `specs/004-status-effects/quickstart.md` mapping table if any test file
       names drifted
 
