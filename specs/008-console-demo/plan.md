@@ -142,6 +142,8 @@ demo-console/src/main/kotlin/io/github/kirthar/sddrpg/demo/console/
 
 demo-console/src/test/kotlin/io/github/kirthar/sddrpg/demo/console/
 ├── BattleLoopTest.kt                # NEW: scripted input/output, no real console (FR-007)
+├── BattleLoopDeterminismTest.kt     # NEW: same scripted inputs replayed twice, identical outcome (FR-010)
+├── BattleLoopPlaythroughTest.kt     # NEW: US3 — a full scripted playthrough exercises every mechanic
 └── ConsoleRenderingTest.kt          # NEW
 ```
 
