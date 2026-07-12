@@ -204,16 +204,16 @@ verify health increases by the formula's result and never exceeds maximum.
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T020 [P] Add a spec-001-contract-preservation test: `Roster.toBattleState()`
+- [X] T020 [P] Add a spec-001-contract-preservation test: `Roster.toBattleState()`
       leaves every field of every wrapped `Combatant` structurally unchanged (FR-012)
       in `TEST/BattleStateContractTest.kt`
-- [ ] T021 [P] Add a cross-cutting determinism property test: `resolveAction` called
+- [X] T021 [P] Add a cross-cutting determinism property test: `resolveAction` called
       twice with the same `(state, action, targetIds)` always returns an equal result,
       across randomized actions/targets (SC-003) in
       `TEST/ActionResolutionDeterminismTest.kt`
-- [ ] T022 KDoc pass on all public `action` package files (surface listed in
+- [X] T022 KDoc pass on all public `action` package files (surface listed in
       contracts/action-api.md)
-- [ ] T023 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;
+- [X] T023 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;
       update `specs/002-actions-damage-resolution/quickstart.md` mapping table if any
       test file names drifted
 

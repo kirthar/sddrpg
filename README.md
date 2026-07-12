@@ -8,7 +8,7 @@ Multiplatform, developed end-to-end with **Spec-Driven Development** using
 
 | Module | Status | Purpose |
 |---|---|---|
-| `core` | spec 001 implemented | Pure KMP combat engine (no platform/UI deps, seeded RNG, data-driven) — combatant & class model done |
+| `core` | specs 001-002 implemented | Pure KMP combat engine (no platform/UI deps, seeded RNG, data-driven) — combatant/class model + action/damage resolution done |
 | `content` | scaffolded | Content definitions (classes, skills, spells, enemies…) + loaders |
 | `demo-console` | scaffolded | JVM console demo (Final Fantasy-style), first end-to-end validation |
 | `tactical` | reserved slot | Optional grid-positioning module (future milestone, not a Gradle module yet) |
@@ -29,7 +29,9 @@ Specs live under `specs/`. Planned spec sequence:
 
 1. **001 — Combatant & class model** ✅ *(implemented)*: combatant kinds (party / enemy /
    temporary ally), character classes, enemy archetypes, stats, elemental affinities (as data).
-2. 002 — Actions & damage resolution (Command + Strategy; elemental resolution rules).
+2. **002 — Actions & damage resolution** ✅ *(implemented)*: combat actions as Command,
+   damage/heal formulas as Strategy, elemental adjustment, targeting shapes, battle-time
+   health tracking (`BattleState`).
 3. 003 — Turn scheduling (`TurnScheduler` abstraction, classic/ATB implementation).
 4. 004 — Status effects (State).
 5. 005 — Battle events, synergies & combos (Observer/event bus).
