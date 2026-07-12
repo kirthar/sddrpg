@@ -144,18 +144,18 @@ verify both runs produce the identical turn order with the same tie resolution.
 
 ### Tests for User Story 3 (write first, must fail) ⚠️
 
-- [ ] T014 [P] [US3] Write failing tests for tie-breaking (two combatants with
+- [X] T014 [P] [US3] Write failing tests for tie-breaking (two combatants with
       identical Speed reaching readiness simultaneously are resolved the same way
       every time, by roster/participants order — not by `CombatantId` string order,
       research R3) in `TEST/TieBreakTest.kt`
-- [ ] T015 [P] [US3] Write failing property test for full-sequence determinism (the
+- [X] T015 [P] [US3] Write failing property test for full-sequence determinism (the
       same battle configuration and the same sequence of `nextTurn`/`markSpent` calls,
       replayed from scratch, always yields a structurally identical turn order, spec
       FR-006/SC-003) in `TEST/DeterminismTest.kt`
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] No new implementation expected: T010 already implements tie-break
+- [X] T016 [US3] No new implementation expected: T010 already implements tie-break
       selection by `battle.participants` index order (research R3) as part of its
       single winner-selection step, so this task is confirmation — run T014/T015 and
       fix `MAIN/ActiveTimeBattleScheduler.kt` only if either test surfaces a real gap
