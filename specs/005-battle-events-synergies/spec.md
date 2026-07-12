@@ -62,13 +62,16 @@ by inspecting the accumulated record afterward, with no separate wiring per call
 
 ---
 
-### User Story 2 - A class-combination synergy triggers its bonus automatically (Priority: P1)
+### User Story 2 - A class-flavored combination synergy triggers its bonus automatically (Priority: P1)
 
-A content designer defines a synergy: when a combatant of one qualifying class and,
-within a defined window, a combatant of a second qualifying class each act against the
-same target, the synergy's bonus effect (e.g., bonus damage) is applied automatically —
-without the game developer having to detect the combination or invoke anything beyond
-the normal resolution flow.
+A content designer defines a synergy: when a combatant with one qualifying capability
+and, within a defined window, a combatant with a second qualifying capability each act
+against the same target, the synergy's bonus effect (e.g., bonus damage) is applied
+automatically — without the game developer having to detect the combination or invoke
+anything beyond the normal resolution flow. Because spec 001's classes are what grant
+combatants their capabilities in the first place, authoring a synergy around two
+class-signature capabilities (e.g., "whoever can Cleave" + "whoever can cast Fira") is
+how a designer expresses a "Warrior + Mage" style combination in practice.
 
 **Why this priority**: This is the feature's namesake payoff — an event log with no
 synergy detection on top of it doesn't deliver what "synergies" promises; both User
@@ -76,22 +79,24 @@ Story 1 and this one are required together for the feature's stated purpose, mir
 how earlier specs treated two load-bearing mechanisms as equally P1 when neither alone
 is the point.
 
-**Independent Test**: Author a synergy requiring two specific classes acting on the
-same target within a window of a few turns; have two combatants of those classes act
-on the same enemy within that window, and verify the synergy's bonus effect is applied
-automatically, with no explicit "trigger this synergy" call.
+**Independent Test**: Author a synergy requiring two specific capabilities acting on
+the same target within a window of a few turns; have two combatants each possessing
+one of those capabilities act on the same enemy within that window, and verify the
+synergy's bonus effect is applied automatically, with no explicit "trigger this
+synergy" call.
 
 **Acceptance Scenarios**:
 
-1. **Given** a defined synergy requiring classes A and B on the same target within a
-   window, **When** a class-A combatant and then a class-B combatant each act on the
-   same target within that window, **Then** the synergy's bonus effect is applied.
+1. **Given** a defined synergy requiring capabilities A and B on the same target
+   within a window, **When** a combatant with capability A and then a combatant with
+   capability B each act on the same target within that window, **Then** the
+   synergy's bonus effect is applied.
 2. **Given** the same synergy, **When** the second qualifying action happens *outside*
    the defined window, **Then** the synergy does not trigger.
 3. **Given** the same synergy, **When** both qualifying actions target *different*
    combatants, **Then** the synergy does not trigger.
 4. **Given** the same synergy, **When** the same single combatant would need to satisfy
-   both class roles, **Then** the synergy does not trigger — two distinct combatants
+   both capability roles, **Then** the synergy does not trigger — two distinct combatants
    are required.
 5. **Given** a synergy's bonus effect is a bonus-damage amount, **When** it applies,
    **Then** the target's health decreases according to the same bounds every other
@@ -177,15 +182,18 @@ events that caused it.
 - **FR-003**: The system MUST accumulate events into an ordered record for a battle
   that a caller can inspect at any point; already-recorded events are never lost or
   reordered by later occurrences.
-- **FR-004**: The system MUST allow class-combination synergies to be authored as
-  data: an identifier, exactly two required distinct classes, a same-target condition,
-  a window, and a bonus effect — never as hardcoded logic naming specific classes
-  (constitution Principle II).
+- **FR-004**: The system MUST allow class-flavored combination synergies to be
+  authored as data: an identifier, two required distinct qualifying capabilities
+  (identified by skill — spec 001 grants specific skills per class, so pairing two
+  skills is how a "Warrior + Mage" style combination is authored in practice; see
+  Assumptions), a same-target condition, a window, and a bonus effect — never as
+  hardcoded logic naming specific classes or skills (constitution Principle II).
 - **FR-005**: The system MUST automatically detect, from the accumulated event record,
-  when a synergy's condition is satisfied — a combatant of each of the synergy's two
-  required classes acted against the same target, the two qualifying occurrences
-  falling within the synergy's window, and the two acting combatants being distinct —
-  and MUST trigger that synergy's bonus effect at the point the condition becomes true.
+  when a synergy's condition is satisfied — a combatant currently having each of the
+  synergy's two required qualifying capabilities acted against the same target, the
+  two qualifying occurrences falling within the synergy's window, and the two acting
+  combatants being distinct — and MUST trigger that synergy's bonus effect at the
+  point the condition becomes true.
 - **FR-006**: A synergy's bonus effect MUST be applied through the existing resolution
   mechanisms (e.g., bonus damage applied with the same health-bounds guarantees as
   spec 002's action resolution) — never a new, separate health-modification pathway.
@@ -193,7 +201,7 @@ events that caused it.
   against the same event record; one synergy triggering MUST NOT prevent another,
   independently-satisfied synergy from also triggering.
 - **FR-008**: A synergy MUST require two distinct combatants; the same combatant
-  satisfying both of a synergy's required-class roles MUST NOT trigger it.
+  satisfying both of a synergy's required-capability roles MUST NOT trigger it.
 - **FR-009**: Triggering a synergy MUST itself produce a discoverable event identifying
   the synergy and the combatants that satisfied it, observable the same way as any
   other event in this feature.
@@ -214,7 +222,9 @@ events that caused it.
 - **Event Record**: the ordered, growing collection of Battle Events accumulated for
   one battle.
 - **Synergy Definition**: data describing one synergy — identifier, its two required
-  distinct classes, the same-target condition, its window, and its bonus effect.
+  distinct qualifying capabilities (see Assumptions — expressed as skills, since
+  skills are what spec 001's classes actually grant), the same-target condition, its
+  window, and its bonus effect.
 - **Synergy Trigger**: the fact of a Synergy Definition's condition becoming satisfied,
   producing its bonus effect and its own Battle Event.
 
@@ -251,10 +261,22 @@ events that caused it.
   identifies that combatant as the actor and that target as affected; this is
   intentionally broad (not damage-only) since the input's own example ("attacking")
   is illustrative, not exhaustive.
-- **Synergy shape (v1)**: exactly two required classes per synergy definition (a
-  pair), matching the input's own example; broader N-way or set-based combinations are
-  a natural future extension this design does not preclude, but are not built now
-  (constitution Principle V).
+- **Synergy shape (v1)**: exactly two required qualifying capabilities per synergy
+  definition (a pair), matching the input's own example; broader N-way or set-based
+  combinations are a natural future extension this design does not preclude, but are
+  not built now (constitution Principle V).
+- **"Class-combination" is realized as skill-combination**: spec 001's public
+  `Combatant` interface exposes `capabilities` (including granted skills) but never a
+  combatant's class identifier directly — that detail lives only on spec 001's
+  internal implementation, deliberately not part of the public contract this feature
+  must consume unchanged (FR-011). Since a class's entire purpose is to grant a
+  specific skill set, authoring a synergy around two required skills achieves the
+  same "class-flavored combination" business outcome the input asked for, using data
+  that is genuinely observable through the existing public API — without reaching
+  into spec 001's private implementation details or requiring any change to its
+  files. This adjustment was made during `/speckit-plan` once the constraint was
+  confirmed against spec 001's actual source; every requirement above already
+  reflects it.
 - **Multiple triggers**: when several independently-defined synergies' conditions are
   all satisfied by the same events, all of them trigger — synergies are treated as
   independent bonuses, not mutually exclusive alternatives (per FR-007/SC-004).
