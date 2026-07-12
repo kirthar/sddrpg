@@ -184,7 +184,7 @@ verify health increases by the formula's result and never exceeds maximum.
 
 ### Tests for User Story 4 (write first, must fail) ⚠️
 
-- [ ] T018 [P] [US4] Write failing tests for US4 scenarios 1–3 (heal increases health
+- [X] T018 [P] [US4] Write failing tests for US4 scenarios 1–3 (heal increases health
       by the formula's result; heal near maximum is capped at maximum, never
       overflows; a heal with no declared element applies no elemental adjustment) plus
       a property test asserting `HealthTrack.current` stays within `[0, maximum]`
@@ -193,7 +193,7 @@ verify health increases by the formula's result and never exceeds maximum.
 
 ### Implementation for User Story 4
 
-- [ ] T019 [US4] Verify and, if any gap is found, extend the maximum-side clamp for
+- [X] T019 [US4] Verify and, if any gap is found, extend the maximum-side clamp for
       `EffectKind.HEAL` in `resolveAction` in `MAIN/ActionResolution.kt` (the `[0,
       maximum]` clamp from T013 should already cover this — this task closes any gap
       the T018 property test surfaces)
