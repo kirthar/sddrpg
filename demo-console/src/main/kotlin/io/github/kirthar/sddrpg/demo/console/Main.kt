@@ -1,7 +1,5 @@
 package io.github.kirthar.sddrpg.demo.console
 
-import io.github.kirthar.sddrpg.core.ENGINE_NAME
-
 fun main() {
-    println("$ENGINE_NAME demo console — battle loop pending spec implementation.")
+    println("sddrpg demo console — battle loop pending spec implementation (feature 008).")
 }

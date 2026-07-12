@@ -28,8 +28,8 @@ full relative path from the repo root using these prefixes.
 **Purpose**: Package skeleton and test conventions inside the existing `core` module
 (Gradle/KMP/kotest wiring already exists from the project skeleton).
 
-- [ ] T001 Create empty package directories `MAIN/model/`, `MAIN/catalog/`, `MAIN/combatant/` and mirrored `TEST/model/`, `TEST/catalog/`, `TEST/combatant/`; delete placeholder `MAIN/Engine.kt` and `TEST/ToolchainSmokeTest.kt` once first real tests exist (fold into T004/T005)
-- [ ] T002 [P] Add strict-JSON test helper (single `Json { ignoreUnknownKeys = false }` instance per research.md R8) in `TEST/TestJson.kt`
+- [X] T001 Create empty package directories `MAIN/model/`, `MAIN/catalog/`, `MAIN/combatant/` and mirrored `TEST/model/`, `TEST/catalog/`, `TEST/combatant/`; delete placeholder `MAIN/Engine.kt` and `TEST/ToolchainSmokeTest.kt` once first real tests exist (fold into T004/T005)
+- [X] T002 [P] Add strict-JSON test helper (single `Json { ignoreUnknownKeys = false }` instance per research.md R8) in `TEST/TestJson.kt`
 
 ---
 
@@ -40,12 +40,12 @@ hybrid catalog invariants, affinity scale. Test-first within the phase.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T003 [P] Write failing unit tests for identifier value classes ((in)equality, serialization as plain JSON strings) in `TEST/model/IdentifiersTest.kt`
-- [ ] T004 [P] Write failing unit + property tests for `StatBlock` (all 8 core stats always present; values ≥ 0; construction rejects incomplete core set; custom stat keys allowed) in `TEST/model/StatBlockTest.kt`
-- [ ] T005 [P] Write failing unit tests for `Affinity` enum (5 stances; JSON names per contract; default NEUTRAL lookup helper) in `TEST/model/AffinityTest.kt`
-- [ ] T006 Implement identifier value classes (`StatId`, `ElementId`, `ClassId`, `ArchetypeId`, `SkillId`, `LimitBreakId`, `AiProfileId`, `EquipmentCategoryId`, `CharacterId`, `EnemyId`, `CombatantId`) with `@Serializable`/value-class JSON shape in `MAIN/model/Identifiers.kt`
-- [ ] T007 Implement `StatBlock` + `CoreStats` constants (HP, MP, ATTACK, DEFENSE, MAGIC, RESISTANCE, SPEED, LUCK) with completeness/bounds invariants per data-model.md in `MAIN/model/Stats.kt`
-- [ ] T008 [P] Implement `Affinity` enum + total lookup helper (absent ⇒ NEUTRAL) in `MAIN/model/Affinity.kt`
+- [X] T003 [P] Write failing unit tests for identifier value classes ((in)equality, serialization as plain JSON strings) in `TEST/model/IdentifiersTest.kt`
+- [X] T004 [P] Write failing unit + property tests for `StatBlock` (all 8 core stats always present; values ≥ 0; construction rejects incomplete core set; custom stat keys allowed) in `TEST/model/StatBlockTest.kt`
+- [X] T005 [P] Write failing unit tests for `Affinity` enum (5 stances; JSON names per contract; default NEUTRAL lookup helper) in `TEST/model/AffinityTest.kt`
+- [X] T006 Implement identifier value classes (`StatId`, `ElementId`, `ClassId`, `ArchetypeId`, `SkillId`, `LimitBreakId`, `AiProfileId`, `EquipmentCategoryId`, `CharacterId`, `EnemyId`, `CombatantId`) with `@Serializable`/value-class JSON shape in `MAIN/model/Identifiers.kt`
+- [X] T007 Implement `StatBlock` + `CoreStats` constants (HP, MP, ATTACK, DEFENSE, MAGIC, RESISTANCE, SPEED, LUCK) with completeness/bounds invariants per data-model.md in `MAIN/model/Stats.kt`
+- [X] T008 [P] Implement `Affinity` enum + total lookup helper (absent ⇒ NEUTRAL) in `MAIN/model/Affinity.kt`
 
 **Checkpoint**: `:core:allTests` green on JVM+JS — foundation ready, stories can start.
 
@@ -63,19 +63,19 @@ character's classId and assert capabilities follow (scenario 4).
 
 ### Tests for User Story 1 (write first, must fail) ⚠️
 
-- [ ] T009 [P] [US1] Write failing unit + property tests for `GrowthCurve` (`Linear` formula; `Table` exact values + clamping beyond last entry; outputs ≥ 0; determinism: same input ⇒ same output; serialization with `type` discriminator `linear`/`table` per contract) in `TEST/model/GrowthCurveTest.kt`
-- [ ] T010 [P] [US1] Write failing unit tests for `statsAt(classDef, level, baseStats)` (level ≥ 1 enforced; stats without curve stay at base; property: determinism SC-006) in `TEST/model/StatsAtTest.kt`
-- [ ] T011 [P] [US1] Write failing serialization round-trip tests for `ClassDefinition` + `CharacterDefinition` (JSON from contracts/catalog-api.md class/character examples; defaults: empty affinities ⇒ neutral) in `TEST/catalog/DefinitionSerializationTest.kt`
-- [ ] T012 [P] [US1] Write failing catalog validation tests for the US1 subset (unknown character→classId; class→skill/limitBreak/equipmentCategory/statId dangling refs; duplicate ClassId/CharacterId; undeclared custom stat; core stat redeclared in customStats; empty commands invalid; empty skills valid; errors accumulated — one fixture with N errors reports all N, each naming the offending definition per SC-002) in `TEST/catalog/CatalogValidationTest.kt`
-- [ ] T013 [P] [US1] Write failing acceptance tests for US1 scenarios 1–4 (capabilities equal class grants; same class two characters share grants but keep own stats; class-specific limit break listed; classId swap in re-validated catalog changes capabilities only) in `TEST/catalog/ClassCapabilityTest.kt`
+- [X] T009 [P] [US1] Write failing unit + property tests for `GrowthCurve` (`Linear` formula; `Table` exact values + clamping beyond last entry; outputs ≥ 0; determinism: same input ⇒ same output; serialization with `type` discriminator `linear`/`table` per contract) in `TEST/model/GrowthCurveTest.kt`
+- [X] T010 [P] [US1] Write failing unit tests for `statsAt(classDef, level, baseStats)` (level ≥ 1 enforced; stats without curve stay at base; property: determinism SC-006) in `TEST/model/StatsAtTest.kt`
+- [X] T011 [P] [US1] Write failing serialization round-trip tests for `ClassDefinition` + `CharacterDefinition` (JSON from contracts/catalog-api.md class/character examples; defaults: empty affinities ⇒ neutral) in `TEST/catalog/DefinitionSerializationTest.kt`
+- [X] T012 [P] [US1] Write failing catalog validation tests for the US1 subset (unknown character→classId; class→skill/limitBreak/equipmentCategory/statId dangling refs; duplicate ClassId/CharacterId; undeclared custom stat; core stat redeclared in customStats; empty commands invalid; empty skills valid; errors accumulated — one fixture with N errors reports all N, each naming the offending definition per SC-002) in `TEST/catalog/CatalogValidationTest.kt`
+- [X] T013 [P] [US1] Write failing acceptance tests for US1 scenarios 1–4 (capabilities equal class grants; same class two characters share grants but keep own stats; class-specific limit break listed; classId swap in re-validated catalog changes capabilities only) in `TEST/catalog/ClassCapabilityTest.kt`
 
 ### Implementation for User Story 1
 
-- [ ] T014 [US1] Implement sealed `GrowthCurve` (`Linear`, `Table`) with `at(level)` and serialization discriminator in `MAIN/model/GrowthCurve.kt`
-- [ ] T015 [US1] Implement pure `statsAt(classDef, level, baseStats): StatBlock` in `MAIN/model/Stats.kt` (extend file from T007)
-- [ ] T016 [US1] Implement `ClassDefinition`, `CharacterDefinition`, `CommandKind` enum per data-model.md in `MAIN/catalog/Definitions.kt`
-- [ ] T017 [US1] Implement `Catalog` (raw aggregate incl. `customStats`, `elements`, `equipmentCategories`, `knownSkills`, `knownLimitBreaks`, `knownAiProfiles`) and `ValidatedCatalog` lookup interface (classes/characters subset) in `MAIN/catalog/Catalog.kt`
-- [ ] T018 [US1] Implement `validateCatalog` two-phase accumulating validation + `CatalogError` variants (`DuplicateId`, `UnknownReference`, `IncompleteStatBlock`, `UndeclaredCustomStat`, `CoreStatRedeclared`, `EmptyCommands`, `NegativeValue`) for the US1 subset in `MAIN/catalog/CatalogValidation.kt`
+- [X] T014 [US1] Implement sealed `GrowthCurve` (`Linear`, `Table`) with `at(level)` and serialization discriminator in `MAIN/model/GrowthCurve.kt`
+- [X] T015 [US1] Implement pure `statsAt(classDef, level, baseStats): StatBlock` in `MAIN/model/Stats.kt` (extend file from T007)
+- [X] T016 [US1] Implement `ClassDefinition`, `CharacterDefinition`, `CommandKind` enum per data-model.md in `MAIN/catalog/Definitions.kt`
+- [X] T017 [US1] Implement `Catalog` (raw aggregate incl. `customStats`, `elements`, `equipmentCategories`, `knownSkills`, `knownLimitBreaks`, `knownAiProfiles`) and `ValidatedCatalog` lookup interface (classes/characters subset) in `MAIN/catalog/Catalog.kt`
+- [X] T018 [US1] Implement `validateCatalog` two-phase accumulating validation + `CatalogError` variants (`DuplicateId`, `UnknownReference`, `IncompleteStatBlock`, `UndeclaredCustomStat`, `CoreStatRedeclared`, `EmptyCommands`, `NegativeValue`) for the US1 subset in `MAIN/catalog/CatalogValidation.kt`
 
 **Checkpoint**: US1 fully green — MVP: classes/characters authorable and validated.
 
