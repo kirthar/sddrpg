@@ -124,8 +124,22 @@ data class LimitBreakUsed(val combatantId: CombatantId, val limitBreakId: LimitB
 data class SummonCast(val combatantId: CombatantId, val summonId: SummonId) : BattleEvent
 
 fun eventsFromGaugeCharge(before: LimitGaugeState, after: LimitGaugeState, catalog: LimitBreakCatalog): List<BattleEvent>
-fun eventsFromLimitBreak(actorId: CombatantId, limitBreakId: LimitBreakId, result: LimitBreakResolutionResult): List<BattleEvent>
-fun eventsFromSummon(actorId: CombatantId, summonId: SummonId, result: SummonResolutionResult): List<BattleEvent>
+
+fun eventsFromLimitBreak(
+    oldState: BattleState,
+    actorId: CombatantId,
+    limitBreakId: LimitBreakId,
+    effectKind: EffectKind,
+    result: LimitBreakResolutionResult,
+): List<BattleEvent>
+
+fun eventsFromSummon(
+    oldState: BattleState,
+    actorId: CombatantId,
+    summonId: SummonId,
+    effectKind: EffectKind,
+    result: SummonResolutionResult,
+): List<BattleEvent>
 ```
 
 Stability rules:
@@ -149,9 +163,14 @@ Stability rules:
   threshold — a combatant already at threshold who takes more damage (clamped, no
   further gauge change) does not re-fire it.
 - `LimitBreakUsed`/`SummonCast` and the `DamageDealt`/`HealingApplied`/
-  `CombatantDefeated` events their own resolution produced MUST be appended to the
-  `EventLog` together in one batch, the same composition convention spec 005's
-  `SynergyTriggered` + bonus events established.
+  `CombatantDefeated` events their own resolution produced are built together, in one
+  call, by `eventsFromLimitBreak`/`eventsFromSummon` themselves — they derive
+  directly from `result.outcomes` (choosing `DamageDealt` vs `HealingApplied` by the
+  passed-in `effectKind`, the same rule spec 005's `eventsFromResolution` uses) rather
+  than requiring the caller to reconstruct a synthetic `ActionResolutionResult` just to
+  reuse that function. The trigger event (`LimitBreakUsed`/`SummonCast`) is always
+  first in the returned list, mirroring spec 005's `SynergyTriggered`-before-its-
+  bonus-events ordering. `Rejected` results return an empty list.
 
 ## Typical usage (informative, not itself a contract)
 
@@ -165,23 +184,20 @@ gauges = chargeLimitGauge(gauges, battle, actionEvents, limitBreakCatalog)
 log = log.append(actionEvents + eventsFromGaugeCharge(gaugeBefore, gauges, limitBreakCatalog))
 
 // Using a limit break once a gauge is full:
+val oldBattle = battle
 val lbResult = resolveLimitBreak(battle, gauges, actorId, targetIds, limitBreakCatalog)
 if (lbResult is LimitBreakResolutionResult.Resolved) {
     battle = lbResult.newState
     gauges = lbResult.newGauges
 }
-log = log.append(
-    eventsFromLimitBreak(actorId, limitBreakId, lbResult) +
-        (if (lbResult is LimitBreakResolutionResult.Resolved)
-            eventsFromResolution(battle, /* synthesized action */ action, ActionResolutionResult.Resolved(lbResult.newState, lbResult.outcomes))
-        else emptyList())
-)
+log = log.append(eventsFromLimitBreak(oldBattle, actorId, limitBreakId, definition.effectKind, lbResult))
 
 // Casting a summon:
+val oldBattle2 = battle
 val summonResult = resolveSummon(battle, resources, actorId, summonId, targetIds, summonCatalog)
 if (summonResult is SummonResolutionResult.Resolved) {
     battle = summonResult.newState
     resources = summonResult.newResources
 }
-log = log.append(eventsFromSummon(actorId, summonId, summonResult) + /* + its own damage/heal events */)
+log = log.append(eventsFromSummon(oldBattle2, actorId, summonId, definition.effectKind, summonResult))
 ```

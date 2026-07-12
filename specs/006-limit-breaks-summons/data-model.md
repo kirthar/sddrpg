@@ -116,14 +116,30 @@ that trust their caller's already-established precondition).
 | `LimitBreakUsed` | `combatantId: CombatantId`, `limitBreakId: LimitBreakId` | a `resolveLimitBreak` call returns `Resolved` |
 | `SummonCast` | `combatantId: CombatantId`, `summonId: SummonId` | a `resolveSummon` call returns `Resolved` |
 
-### eventsFromGaugeCharge / eventsFromLimitBreak / eventsFromSummon
-Same "derive from an already-completed call's inputs and output" shape as spec 005's
-`eventsFromX` functions (research R1 there): each takes the before/after state of its
-own operation and returns the `GaugeFull`/`LimitBreakUsed`/`SummonCast` event (plus,
-for the latter two, the caller is expected to also call spec 005's
-`eventsFromResolution` on the same `resolveAction` result and append both batches
-together, the same composition pattern spec 005's contracts/event-api.md documented
-for synergy triggers + their bonus events).
+### eventsFromGaugeCharge
+`(before: LimitGaugeState, after: LimitGaugeState, catalog: LimitBreakCatalog) -> List<BattleEvent>`
+
+Compares the two maps; for each combatant whose gauge crossed from below its
+threshold to at-or-above it, emits one `GaugeFull`.
+
+### eventsFromLimitBreak / eventsFromSummon
+`(oldState: BattleState, actorId: CombatantId, id: LimitBreakId | SummonId, effectKind: EffectKind, result: LimitBreakResolutionResult | SummonResolutionResult) -> List<BattleEvent>`
+
+On `Rejected`, returns an empty list (nothing happened). On `Resolved`, builds the
+`DamageDealt`/`HealingApplied` (chosen by `effectKind`, the same selection rule spec
+005's `eventsFromResolution` uses) plus a defeat check for each entry in
+`result.outcomes` directly — **not** by reconstructing a synthetic
+`ActionResolutionResult` to hand to spec 005's `eventsFromResolution` (an earlier
+draft of this contract did that; it required callers to fabricate a fake resolution
+result just to reuse a function, which is backwards — a wrapper deriving its own
+events should do so directly). The defeat check reuses spec 005's `internal
+defeatedEvents` helper: reusing it here is honest module-internal sharing between two
+files that are both genuinely part of the `event` package (this file is placed there
+*by Kotlin's own sealed-type rule*, research R4 — not as a workaround to reach across
+an unrelated feature's encapsulation boundary), unlike the classId-style internals
+this project's discipline otherwise avoids reaching into. The `LimitBreakUsed`/
+`SummonCast` event itself is prepended before its effect's events, mirroring spec
+005's `SynergyTriggered`-before-its-bonus-events ordering.
 
 ## Determinism guarantee (spec FR-011/SC-005)
 
