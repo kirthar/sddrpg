@@ -115,7 +115,7 @@ other two continue scheduling normally.
 
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
-- [ ] T012 [US2] Write failing tests for US2 scenarios 1–3 (a defeated combatant is
+- [X] T012 [US2] Write failing tests for US2 scenarios 1–3 (a defeated combatant is
       never reported ready; a combatant defeated between two `nextTurn` calls is
       excluded starting from the next call; once one side is fully defeated only the
       remaining side is ever reported) plus FR-009/SC-005 (every combatant defeated ⇒
@@ -123,7 +123,7 @@ other two continue scheduling normally.
 
 ### Implementation for User Story 2
 
-- [ ] T013 [US2] Extend `nextTurn`'s candidate filter to exclude defeated participants
+- [X] T013 [US2] Extend `nextTurn`'s candidate filter to exclude defeated participants
       (checked fresh against the `battle: BattleState` parameter every call — never
       cached in `AtbScheduleState`, research R4) in `MAIN/ActiveTimeBattleScheduler.kt`
 
