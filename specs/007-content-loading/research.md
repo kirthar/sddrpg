@@ -81,9 +81,14 @@ already-stable shape for no benefit and drift if `Catalog` ever gains a field).
 
 ## R3 — Four cross-catalog reference checks, each already implied by an existing spec's own design
 
-**Decision**: `validateCrossCatalogReferences(catalog: ValidatedCatalog, statusEffects:
+**Decision**: `validateCrossCatalogReferences(catalog: Catalog, statusEffects:
 StatusEffectCatalog, synergies: SynergyCatalog, limitBreaks: LimitBreakCatalog):
-List<ContentProblem>` checks exactly these four relationships, no more:
+List<ContentProblem>` takes the *raw* `Catalog` (not `ValidatedCatalog` — every field
+these checks read, `knownLimitBreaks`/`knownSkills`/`customStats`/`elements`, already
+lives directly on `Catalog`; the validated wrapper's lookup methods aren't needed
+here), which also means these checks can run unconditionally regardless of whether
+the core catalog's own validation succeeded. Checks exactly these four
+relationships, no more:
 
 1. **Class limit breaks → `LimitBreakCatalog`**: every `LimitBreakId` in
    `Catalog.knownLimitBreaks` (spec 001) must have a matching `LimitBreakDefinition`

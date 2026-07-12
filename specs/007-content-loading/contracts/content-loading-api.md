@@ -95,8 +95,7 @@ sealed interface ContentLoadResult {
 
 // CrossCatalogValidation.kt
 fun validateCrossCatalogReferences(
-    catalog: ValidatedCatalog,
-    rawCatalog: Catalog,
+    catalog: Catalog,
     statusEffects: StatusEffectCatalog,
     synergies: SynergyCatalog,
     limitBreaks: LimitBreakCatalog,

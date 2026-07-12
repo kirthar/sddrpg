@@ -98,25 +98,28 @@ accumulate-all, mirroring every `*CatalogResult` this project has built (spec
    `validateLimitBreakCatalog`, `validateSummonCatalog` — all five, unconditionally,
    never short-circuiting — and collect every error, wrapped in its matching
    `ContentProblem` variant.
-4. If step 3's core catalog validation succeeded (a `ValidatedCatalog` exists),
-   additionally run `validateCrossCatalogReferences` (R3's four checks) against the
-   already-validated catalog and the four (possibly still-invalid) other catalogs'
-   raw definitions, collecting `DanglingReference` problems. (If the core catalog
-   itself failed validation, cross-catalog checks that need a `ValidatedCatalog` are
-   skipped for that specific check, but this can still surface other catalogs'
-   own errors from step 3 — every non-core-catalog-dependent problem is still
-   reported.)
+4. Always (regardless of whether step 3's core catalog validation succeeded — all
+   four checks below only read fields already present on the raw `Catalog` itself,
+   never needing a `ValidatedCatalog`'s lookup methods) run
+   `validateCrossCatalogReferences` (R3's four checks) against the raw `Catalog` and
+   the three other catalogs' raw definitions, collecting `DanglingReference`
+   problems. This means cross-catalog problems are always reported even when the
+   core catalog also independently failed its own validation — the strongest
+   reading of FR-003's "never stop at the first problem."
 5. If the combined problem list from steps 3-4 is empty, return
-   `Valid(ContentPack(...))`. Otherwise return `Invalid(problems)`.
+   `Valid(ContentPack(catalog = the ValidatedCatalog produced by step 3, ...))`.
+   Otherwise return `Invalid(problems)`.
 
 ### validateCrossCatalogReferences (R3)
-`(catalog: ValidatedCatalog, rawCatalog: Catalog, statusEffects: StatusEffectCatalog, synergies: SynergyCatalog, limitBreaks: LimitBreakCatalog) -> List<ContentProblem.DanglingReference>`
+`(catalog: Catalog, statusEffects: StatusEffectCatalog, synergies: SynergyCatalog, limitBreaks: LimitBreakCatalog) -> List<ContentProblem.DanglingReference>`
 
-Checks exactly:
-1. Every `LimitBreakId` in `rawCatalog.knownLimitBreaks` has a matching
+Takes the *raw* `Catalog` (not `ValidatedCatalog` — `knownLimitBreaks`/`knownSkills`/
+`customStats`/`elements` are all plain fields on `Catalog` itself; `ValidatedCatalog`
+only adds lookup methods this function doesn't need). Checks exactly:
+1. Every `LimitBreakId` in `catalog.knownLimitBreaks` has a matching
    `LimitBreakDefinition.id` in `limitBreaks.limitBreaks`.
 2. Every `SkillId` referenced by any `SynergyDefinition.firstSkillId`/`secondSkillId`
-   is in `rawCatalog.knownSkills`.
+   is in `catalog.knownSkills`.
 3. Every `StatId` referenced by any `StatusEffectDefinition`'s `StatModifier`-kind
    effect is either a `CoreStats` id or in `catalog.customStats`.
 4. Every non-null `ElementId` referenced by any `LimitBreakDefinition`/

@@ -138,9 +138,10 @@ validation unchanged.
 - [ ] T012 [US2] Implement `validateCrossCatalogReferences` (the four checks, per
       data-model.md) in `MAIN/CrossCatalogValidation.kt`
 - [ ] T013 [US2] Wire `validateCrossCatalogReferences` into `loadContentPack` as
-      step 4 (only runnable once the core catalog itself validated successfully into
-      a `ValidatedCatalog`; other catalogs' own step-3 problems are still reported
-      regardless) in `MAIN/ContentLoader.kt`
+      step 4, run unconditionally against the raw `Catalog` regardless of whether the
+      core catalog's own validation (step 3) succeeded — cross-catalog problems are
+      always reported even when the core catalog also independently failed in
+      `MAIN/ContentLoader.kt`
 
 **Checkpoint**: US1 + US2 green together — the feature's namesake payoff (nothing
 dangling slips through) works end-to-end.
