@@ -182,7 +182,7 @@ amount each tick, never below zero, with no action submitted.
 
 ### Tests for User Story 4 (write first, must fail) ⚠️
 
-- [ ] T016 [P] [US4] Write failing tests for US4 scenarios 1–3 (each tick reduces
+- [X] T016 [P] [US4] Write failing tests for US4 scenarios 1–3 (each tick reduces
       health by the documented per-tick amount with no `CombatAction` involved; a tick
       that would go below zero clamps at zero; a tick while already at zero health has
       no further effect) plus the research R7 ordering rule (the tick that reduces
@@ -191,7 +191,7 @@ amount each tick, never below zero, with no action submitted.
 
 ### Implementation for User Story 4
 
-- [ ] T017 [US4] Extend `tickStatusEffects` to apply `DamageOverTime`-kind damage for
+- [X] T017 [US4] Extend `tickStatusEffects` to apply `DamageOverTime`-kind damage for
       every effect still active (`remainingDuration >= 0` after decrementing, i.e. not
       yet removed) before removal, accumulating into `StatusTickResult.newBattle` with
       `[0, maximum]` clamping (research R6/R7) in `MAIN/StatusEffectResolution.kt`
