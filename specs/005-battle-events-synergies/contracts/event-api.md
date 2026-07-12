@@ -52,6 +52,8 @@ fun eventsFromTick(
 
 fun eventsFromSchedule(result: ScheduleResult<*>): List<BattleEvent>
 
+fun eventsFromApply(combatantId: CombatantId, effectId: StatusEffectId): List<BattleEvent>
+
 fun eventsFromSynergyBonus(
     oldBattle: BattleState,
     targetId: CombatantId,
@@ -154,6 +156,10 @@ for (trigger in detectSynergyTriggers(events, log, battle, synergyCatalog)) {
         listOf(BattleEvent.SynergyTriggered(trigger.definition.id, trigger.firstActorId, trigger.secondActorId, trigger.targetId)) + bonusEvents
     )
 }
+
+// Applying a status effect:
+statusEffects = applyStatusEffect(statusEffects, targetId, StatusEffectId("poison"), statusCatalog)
+log = log.append(eventsFromApply(targetId, StatusEffectId("poison")))
 
 // Ticking status effects:
 val tickResult = tickStatusEffects(statusEffects, battle, statusCatalog)

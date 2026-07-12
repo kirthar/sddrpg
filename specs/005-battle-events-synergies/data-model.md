@@ -114,6 +114,15 @@ produces a `StatusEffectExpired` event for that effect.
 
 `Ready(combatantId, _)` → `listOf(TurnGranted(combatantId))`. `NoOneReady` → empty list.
 
+### eventsFromApply (R1)
+`(combatantId: CombatantId, effectId: StatusEffectId) -> List<BattleEvent>`
+
+Always `listOf(StatusEffectApplied(combatantId, effectId))` — a thin wrapper a caller
+uses right after calling spec 004's `applyStatusEffect`, unconditionally (a refresh is
+still an application, per the Assumptions note on `StatusEffectApplied` above). Kept
+as its own tiny function rather than folded into `eventsFromTick` because application
+and ticking are two entirely separate spec 004 call sites with no shared inputs.
+
 ### applySynergyBonus / eventsFromSynergyBonus (R4, R6)
 `applySynergyBonus(battle: BattleState, targetId: CombatantId, bonus: SynergyBonus): BattleState`
 applies `BonusDamage.amount` with the same `(current - amount).coerceIn(0, maximum)`

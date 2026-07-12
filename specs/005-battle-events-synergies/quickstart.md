@@ -21,10 +21,11 @@ adds one package (`event`) to the existing `core` module and reuses spec 002's
 | Spec item | Validation |
 |---|---|
 | US1 scenario 1 (empty log, no error) | `event/EventLogTest` |
-| US1 scenarios 2–3 (damage from resolved action vs. DoT tick, same shape) | `event/EventDerivationTest`: asserts a `resolveAction`-sourced and a `tickStatusEffects`-sourced `DamageDealt` differ only in `actorId` |
-| US1 scenario 4 (status applied/expired) | `event/EventDerivationTest` |
+| US1 scenario 2 (damage from a resolved action) | `event/EventDerivationTest`, via `eventsFromResolution` |
+| US1 scenario 3 (DoT tick damage, same shape as a resolved action's) | `event/StatusTickEventTest`, via `eventsFromTick`: asserts a `resolveAction`-sourced and a `tickStatusEffects`-sourced `DamageDealt` differ only in `actorId` |
+| US1 scenario 4 (status applied/expired) | `event/StatusTickEventTest`, via `eventsFromApply`/`eventsFromTick` |
 | US1 scenario 5 (combatant defeated) | `event/DefeatedEventTest`: covers all three health-changing sources (resolution, tick, synergy bonus) via the shared `defeatedEvents` helper |
-| US1 scenario 6 (turn granted) | `event/EventDerivationTest` |
+| US1 scenario 6 (turn granted) | `event/EventDerivationTest`, via `eventsFromSchedule` |
 | US1 scenario 7 (log only grows, never reorders) | `event/EventLogTest` |
 | US2 scenarios 1–4 (synergy triggers / window miss / target mismatch / same-combatant rejection) | `event/SynergyResolutionTest` |
 | US2 scenario 5 (bonus damage respects health bounds) | `event/SynergyResolutionTest`, backed by `event/SynergyBonusClampTest` (0/maximum boundary) |
