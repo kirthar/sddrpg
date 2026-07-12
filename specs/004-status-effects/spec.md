@@ -18,6 +18,18 @@ consume Combatant/BattleState/CombatantId/resolveAction/TurnScheduler from specs
 of status effects the demo will ship (feature 007 content); this feature defines the
 engine mechanism only."
 
+## Clarifications
+
+### Session 2026-07-12
+
+- Q: How does an incapacitating effect's own remaining duration decrease when its
+  target never receives ordinary turns from the scheduler? → A: Every active effect on
+  every combatant ticks once per turn consumed anywhere in the battle (by any
+  combatant), not only on the affected combatant's own turns. This is a general tick
+  rule (not special-cased to incapacitate-kind effects), matches genre-standard "lasts
+  N turns" phrasing, and requires no change to FR-005's already-stated rule that an
+  incapacitated combatant is never offered a turn at all.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Apply a status effect and watch it expire on schedule (Priority: P1)
@@ -216,17 +228,11 @@ rejected.
   damage automatically on each tick, without requiring any actor to submit an action,
   following the same health-bounds clamping already guaranteed for action resolution
   (spec 002 FR-011).
-- **FR-007**: The system MUST define how an incapacitating effect's own remaining
-  duration decreases even though the affected combatant does not receive ordinary
-  turns from the scheduler while it is active.
-  [NEEDS CLARIFICATION: should an incapacitated combatant still be granted a turn slot
-  by the scheduler that is then automatically consumed without allowing an action (so
-  the incapacitated combatant's own accruing turn-readiness is what ticks its status
-  down), or should incapacitate-kind effects instead tick down based on the passage of
-  *other* combatants' turns (a time-based measure independent of the incapacitated
-  combatant's own readiness)? These produce materially different pacing: the first
-  ties stun duration to how quickly the stunned combatant itself would have acted, the
-  second ties it to how much the rest of the battle progresses around it.]
+- **FR-007**: Every active status effect on every combatant — including
+  incapacitate-kind effects on a combatant the scheduler is not offering turns to —
+  MUST have its remaining duration decreased once per turn consumed anywhere in the
+  battle, regardless of which combatant that turn belonged to. This is one uniform
+  tick rule for all effect kinds, not a special case for incapacitation.
 - **FR-008**: Reapplying a status effect that is already active on the same combatant
   MUST refresh its remaining duration to the effect's full documented duration and
   MUST NOT stack or otherwise increase its magnitude.
@@ -291,9 +297,9 @@ rejected.
   target; per-effect-configurable stacking policies are not built now (constitution
   Principle V) and are left to a future feature if ever needed.
 - "The turn sequence" (per the input) means ticking is driven by spec 003's
-  `TurnScheduler`, which has no "round" concept — ticks happen relative to individual
-  turns, not a global clock; the precise trigger point for incapacitated combatants is
-  what FR-007's clarification resolves.
+  `TurnScheduler`, which has no "round" concept — per the clarification, one tick is
+  one turn consumed by any combatant (spec 003's `markSpent`), applied uniformly to
+  every active effect on every combatant, not just the turn's own actor (FR-007).
 - The specific catalog of status effects the demo will ship (poison's exact
   damage-per-tick, a defense buff's exact magnitude, stun's exact duration) is
   content, deferred to feature 007 — this spec defines the mechanism and its closed
