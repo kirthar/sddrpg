@@ -116,13 +116,24 @@ capability, while a granted action of the same combatant still succeeds.
       `ActionError.MissingSkill` naming it; missing MAGIC command rejected as
       `ActionError.MissingCommand`; defeated actor rejected as
       `ActionError.DefeatedActor`; gating reflects a post-`withActiveClass` swap, not
-      the old class) in `TEST/CapabilityGatingTest.kt`
+      the old class) **plus** a DEFEND scenario (`SELF` + `Fixed(0)`, granted DEFEND
+      command resolves to a zero-delta outcome on the actor) and an ITEM scenario
+      (granted ITEM command with `Fixed(amount)` resolves like any other formula) —
+      research R7's claim that this pipeline exercises all five `CommandKind`s must be
+      verified here, not just asserted. **Every rejection case (missing skill, missing
+      command, defeated actor) MUST additionally assert the input `BattleState` is
+      structurally unchanged after the call** (SC-002: rejected before any health
+      change occurs — the error alone is not sufficient proof) in
+      `TEST/CapabilityGatingTest.kt`
 
 ### Implementation for User Story 2
 
 - [ ] T015 [US2] Extend `resolveAction` with the actor-defeated check and the
       command/skill capability checks (against the actor's current
-      `Combatant.capabilities`), ahead of resolution, in `MAIN/ActionResolution.kt`
+      `Combatant.capabilities`), ahead of resolution, in `MAIN/ActionResolution.kt` —
+      DEFEND and ITEM need no special-case code (they flow through the same gating +
+      T013's resolution path with `Fixed`), so this task's scope is unchanged; it now
+      also makes T014's new DEFEND/ITEM cases pass
 
 **Checkpoint**: US1 + US2 green together — this is the feature's real MVP (both P1).
 
@@ -146,7 +157,9 @@ not, with one outcome per affected enemy.
       fans out to every opposing combatant with one outcome each; unknown target id
       rejected naming it; an already-defeated combatant excluded from an "all" shape
       without rejection vs. rejected when explicitly the sole target of a `SINGLE_*`
-      shape) in `TEST/TargetingShapeTest.kt`
+      shape). **Every rejection case (shape mismatch, unknown target) MUST
+      additionally assert the input `BattleState` is structurally unchanged after the
+      call** (SC-002, same rule as T014) in `TEST/TargetingShapeTest.kt`
 
 ### Implementation for User Story 3
 

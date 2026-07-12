@@ -290,3 +290,7 @@ target's maximum.
 - Item actions in this feature are modeled identically to skill actions (a command type
   gated by capability, resolved through a formula); inventory/consumption mechanics are
   out of scope and left to a later feature.
+- Hit/miss and critical-hit chance are out of scope for this feature: every action
+  resolves through deterministic arithmetic only (FR-001, FR-013), with no random
+  success/failure or magnitude variance. Introducing chance-based mechanics is a later
+  feature's concern.

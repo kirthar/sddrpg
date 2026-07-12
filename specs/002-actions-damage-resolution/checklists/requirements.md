@@ -40,3 +40,7 @@
 - Given a fully green checklist, `/speckit-clarify` is optional for this spec. Proceed
   either way — run it to double-check no hidden ambiguity survived, or go straight to
   `/speckit-plan`.
+- `/speckit-analyze` (post-tasks) found 0 critical issues and 3 MEDIUM findings, all
+  remediated: an explicit hit/miss/critical-chance out-of-scope bullet was added to
+  Assumptions (traceability fix), and tasks.md T014/T016 now require asserting no
+  `BattleState` mutation on rejection (SC-002) plus DEFEND/ITEM coverage (research R7).

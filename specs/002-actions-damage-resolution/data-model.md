@@ -87,4 +87,6 @@ Sealed: `DefeatedActor(actorId)`, `MissingCommand(actorId, command)`,
 
 ### ActionResolutionResult
 `sealed interface`: `Resolved(newState: BattleState, outcomes: List<ResolutionOutcome>)`
-XOR `Rejected(error: ActionError)` — an action never partially resolves.
+XOR `Rejected(error: ActionError)` — an action never partially resolves. On `Rejected`,
+the caller's `BattleState` is never touched: validation (steps 1–5 above) runs entirely
+before any `HealthTrack` is read for mutation (spec SC-002).

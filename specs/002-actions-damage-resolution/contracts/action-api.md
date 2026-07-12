@@ -86,6 +86,9 @@ fun resolveAction(
 Stability rules:
 - `resolveAction` never throws for well-formed inputs (unresolvable ids in `targetIds`
   or `action.actorId` are reported via `ActionResolutionResult.Rejected`, not exceptions).
+- On `Rejected`, no `HealthTrack` in `state` is read as changed by the caller — the
+  function only constructs a new `BattleState` on the `Resolved` path (spec SC-002:
+  rejection happens strictly before any health change).
 - `Resolved.newState` differs from the input `state` only in the `HealthTrack` of
   participants named in `outcomes`; every other field of every `BattleCombatant`
   (including the wrapped `Combatant` itself) is identical by structural equality.
