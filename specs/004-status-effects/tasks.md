@@ -212,7 +212,7 @@ than adding to it, with unchanged stat-modifier magnitude.
 
 ### Tests for User Story 5 (write first, must fail) ⚠️
 
-- [ ] T018 [P] [US5] Write failing tests for US5 scenarios 1–2 (reapplying an effect
+- [X] T018 [P] [US5] Write failing tests for US5 scenarios 1–2 (reapplying an effect
       at partial remaining duration resets it to the full documented duration; a
       reapplied stat-modifying effect's adjustment magnitude through
       `deriveEffectiveBattleState` is unchanged, not doubled) in
@@ -220,7 +220,7 @@ than adding to it, with unchanged stat-modifier magnitude.
 
 ### Implementation for User Story 5
 
-- [ ] T019 [US5] No new implementation expected: T008's `applyStatusEffect` already
+- [X] T019 [US5] No new implementation expected: T008's `applyStatusEffect` already
       replaces rather than appends, so reapplication was already correct — this task
       is confirmation; fix `MAIN/StatusEffectResolution.kt` only if T018 surfaces a
       real gap
