@@ -41,6 +41,18 @@ fun resolveAction(
     val actor = state.find(action.actorId)
         ?: return ActionResolutionResult.Rejected(ActionError.UnknownTarget(action.actorId))
 
+    if (actor.isDefeated) {
+        return ActionResolutionResult.Rejected(ActionError.DefeatedActor(action.actorId))
+    }
+    if (action.command !in actor.combatant.capabilities.commands) {
+        return ActionResolutionResult.Rejected(ActionError.MissingCommand(action.actorId, action.command))
+    }
+    action.skillId?.let { skillId ->
+        if (skillId !in actor.combatant.capabilities.skills) {
+            return ActionResolutionResult.Rejected(ActionError.MissingSkill(action.actorId, skillId))
+        }
+    }
+
     for (targetId in targetIds) {
         if (state.find(targetId) == null) {
             return ActionResolutionResult.Rejected(ActionError.UnknownTarget(targetId))

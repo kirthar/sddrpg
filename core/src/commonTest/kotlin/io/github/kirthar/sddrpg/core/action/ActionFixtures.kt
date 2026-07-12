@@ -39,7 +39,7 @@ val actionFixtureCatalog: ValidatedCatalog by lazy {
         id = ClassId("mage"),
         displayName = "Mage",
         skills = setOf(SkillId("fira"), SkillId("cura")),
-        commands = setOf(CommandKind.ATTACK, CommandKind.MAGIC),
+        commands = setOf(CommandKind.ATTACK, CommandKind.MAGIC, CommandKind.SKILL),
     )
     val raw = Catalog(
         elements = setOf(fireElement),

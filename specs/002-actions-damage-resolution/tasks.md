@@ -111,7 +111,7 @@ capability, while a granted action of the same combatant still succeeds.
 
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
-- [ ] T014 [US2] Write failing tests for US2 scenarios 1–4 (granted ATTACK command
+- [X] T014 [US2] Write failing tests for US2 scenarios 1–4 (granted ATTACK command
       accepted through to resolution; missing skill rejected as
       `ActionError.MissingSkill` naming it; missing MAGIC command rejected as
       `ActionError.MissingCommand`; defeated actor rejected as
@@ -128,7 +128,7 @@ capability, while a granted action of the same combatant still succeeds.
 
 ### Implementation for User Story 2
 
-- [ ] T015 [US2] Extend `resolveAction` with the actor-defeated check and the
+- [X] T015 [US2] Extend `resolveAction` with the actor-defeated check and the
       command/skill capability checks (against the actor's current
       `Combatant.capabilities`), ahead of resolution, in `MAIN/ActionResolution.kt` —
       DEFEND and ITEM need no special-case code (they flow through the same gating +
