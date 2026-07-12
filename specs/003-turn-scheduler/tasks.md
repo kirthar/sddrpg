@@ -26,7 +26,7 @@ independently useful. Both together form the MVP.
 
 ## Phase 1: Setup
 
-- [ ] T001 [P] Add reusable schedule-testing fixtures (a small `ValidatedCatalog` +
+- [X] T001 [P] Add reusable schedule-testing fixtures (a small `ValidatedCatalog` +
       `Roster`/`BattleState` with combatants of clearly distinct Speed values,
       following spec 002's `ActionFixtures.kt` pattern) in `TEST/ScheduleFixtures.kt`
 
@@ -40,18 +40,18 @@ incrementally in US1–US3, mirroring how spec 002 phased in `resolveAction`.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 [P] Write failing tests for `initialSchedule` (every `BattleState`
+- [X] T002 [P] Write failing tests for `initialSchedule` (every `BattleState`
       participant gets a readiness entry of `0`; one entry per participant, no more,
       no fewer) in `TEST/InitialScheduleTest.kt`
-- [ ] T003 [P] Write failing unit + property tests for the integer ceiling-division
+- [X] T003 [P] Write failing unit + property tests for the integer ceiling-division
       helper (exact division, remainder cases, `0` numerator, never uses `Double`) in
       `TEST/CeilDivTest.kt`
-- [ ] T004 Implement `TurnScheduler<State>` interface and `ScheduleResult<State>`
+- [X] T004 Implement `TurnScheduler<State>` interface and `ScheduleResult<State>`
       sealed type (data shapes only, per contracts/scheduler-api.md — no algorithm
       body) in `MAIN/TurnScheduler.kt`
-- [ ] T005 [P] Implement `AtbScheduleState` data class and the `ceilDiv` integer
+- [X] T005 [P] Implement `AtbScheduleState` data class and the `ceilDiv` integer
       ceiling-division helper in `MAIN/ActiveTimeBattleScheduler.kt`
-- [ ] T006 Implement `ActiveTimeBattleScheduler.initialSchedule` (readiness = 0 for
+- [X] T006 Implement `ActiveTimeBattleScheduler.initialSchedule` (readiness = 0 for
       every participant, research R4) in `MAIN/ActiveTimeBattleScheduler.kt` (extends
       T005's file)
 
@@ -71,20 +71,20 @@ offered turns more often, with the schedule visibly advancing after each consump
 
 ### Tests for User Story 1 (write first, must fail) ⚠️
 
-- [ ] T007 [P] [US1] Write failing tests for US1 scenarios 1 and 4 (`nextTurn` reports
+- [X] T007 [P] [US1] Write failing tests for US1 scenarios 1 and 4 (`nextTurn` reports
       exactly one ready combatant for a roster of distinct speeds; readiness is
       available from the very start, before any turn has ever been granted) in
       `TEST/NextTurnTest.kt`
-- [ ] T008 [P] [US1] Write failing tests for US1 scenario 2 (immediately after
+- [X] T008 [P] [US1] Write failing tests for US1 scenario 2 (immediately after
       `markSpent`, requesting the next turn again reports a different combatant — the
       one just spent does not re-qualify instantly) in `TEST/MarkSpentTest.kt`
-- [ ] T009 [P] [US1] Write failing property test for US1 scenario 3 / SC-001 (over many
+- [X] T009 [P] [US1] Write failing property test for US1 scenario 3 / SC-001 (over many
       consumed turns, a combatant with distinctly higher Speed is never offered fewer
       turns than a slower one) in `TEST/ReadinessProportionalityTest.kt`
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Implement `ActiveTimeBattleScheduler.nextTurn`'s tick-jump algorithm
+- [X] T010 [US1] Implement `ActiveTimeBattleScheduler.nextTurn`'s tick-jump algorithm
       for the no-defeat case: per-candidate `ceilDiv` ticks-needed, `minTicks`, advance
       every candidate's readiness by `minTicks * speed`, then pick the winner among all
       candidates whose advanced readiness reaches `READY_THRESHOLD` **using the
@@ -94,7 +94,7 @@ offered turns more often, with the schedule visibly advancing after each consump
       — **must guard `speed <= 0` out of candidacy before calling `ceilDiv`**
       (division-by-zero safety, research R2/spec edge case) in
       `MAIN/ActiveTimeBattleScheduler.kt`
-- [ ] T011 [US1] Implement `ActiveTimeBattleScheduler.markSpent` (subtract
+- [X] T011 [US1] Implement `ActiveTimeBattleScheduler.markSpent` (subtract
       `READY_THRESHOLD` from the named combatant's readiness, carrying over any
       overshoot rather than resetting to `0`, research R2) in
       `MAIN/ActiveTimeBattleScheduler.kt`
