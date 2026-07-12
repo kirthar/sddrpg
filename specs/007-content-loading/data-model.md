@@ -111,7 +111,7 @@ accumulate-all, mirroring every `*CatalogResult` this project has built (spec
    Otherwise return `Invalid(problems)`.
 
 ### validateCrossCatalogReferences (R3)
-`(catalog: Catalog, statusEffects: StatusEffectCatalog, synergies: SynergyCatalog, limitBreaks: LimitBreakCatalog) -> List<ContentProblem.DanglingReference>`
+`(catalog: Catalog, statusEffects: StatusEffectCatalog, synergies: SynergyCatalog, limitBreaks: LimitBreakCatalog, summons: SummonCatalog) -> List<ContentProblem.DanglingReference>`
 
 Takes the *raw* `Catalog` (not `ValidatedCatalog` — `knownLimitBreaks`/`knownSkills`/
 `customStats`/`elements` are all plain fields on `Catalog` itself; `ValidatedCatalog`

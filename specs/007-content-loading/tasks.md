@@ -27,7 +27,7 @@ depends on US1+US2 already working).
 
 ## Phase 1: Setup
 
-- [ ] T001 [P] Add reusable content-loading test fixtures (a minimal but complete
+- [X] T001 [P] Add reusable content-loading test fixtures (a minimal but complete
       `ContentFileDto`-shaped JSON literal covering every catalog kind, plus small
       targeted "broken" variants for each individual failure mode this feature must
       catch, reusing spec 001-006's fixture-authoring conventions) in
@@ -43,25 +43,25 @@ that's built incrementally in US1-US2.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 [P] Write failing round-trip tests for every DTO's `toCore()` mapping
+- [X] T002 [P] Write failing round-trip tests for every DTO's `toCore()` mapping
       (`TargetingShapeDto`, `ActionEffectKindDto`, `DamageFormulaDto`,
       `StatusEffectKindDto`, `StatusEffectDefinitionDto`, `SynergyBonusDto`,
       `SynergyDefinitionDto`, `LimitBreakDefinitionDto`, `SummonDefinitionDto` each
       map to the exact `core` value the DTO's fields describe) in
       `TEST/DtoMappingTest.kt`
-- [ ] T003 Implement `TargetingShapeDto`, `ActionEffectKindDto`, `DamageFormulaDto`
+- [X] T003 Implement `TargetingShapeDto`, `ActionEffectKindDto`, `DamageFormulaDto`
       and their `toCore()` functions (shared low-level DTOs spec 006's own DTOs
       depend on) in `MAIN/dto/LimitBreakSummonDto.kt`
-- [ ] T004 [P] Implement `StatusEffectKindDto`, `StatusEffectDefinitionDto`, and
+- [X] T004 [P] Implement `StatusEffectKindDto`, `StatusEffectDefinitionDto`, and
       their `toCore()` functions in `MAIN/dto/StatusEffectDto.kt`
-- [ ] T005 [P] Implement `SynergyBonusDto`, `SynergyDefinitionDto`, and their
+- [X] T005 [P] Implement `SynergyBonusDto`, `SynergyDefinitionDto`, and their
       `toCore()` functions in `MAIN/dto/SynergyDto.kt`
-- [ ] T006 Implement `LimitBreakDefinitionDto`, `SummonDefinitionDto`, and their
+- [X] T006 Implement `LimitBreakDefinitionDto`, `SummonDefinitionDto`, and their
       `toCore()` functions (continues T003's file, depends on its low-level DTOs)
       in `MAIN/dto/LimitBreakSummonDto.kt`
-- [ ] T007 Implement `ContentFileDto` (per data-model.md's R2 shape — every field
+- [X] T007 Implement `ContentFileDto` (per data-model.md's R2 shape — every field
       defaults to empty) in `MAIN/dto/ContentFileDto.kt`
-- [ ] T008 [P] Implement `ContentPack`, `ContentProblem`, `ContentLoadResult` data
+- [X] T008 [P] Implement `ContentPack`, `ContentProblem`, `ContentLoadResult` data
       shapes (no logic yet) in `MAIN/ContentPack.kt`
 
 **Checkpoint**: `:content:allTests` green on JVM+JS — foundation ready, stories can start.
@@ -82,7 +82,7 @@ every mistake is reported together.
 
 ### Tests for User Story 1 (write first, must fail) ⚠️
 
-- [ ] T009 [US1] Write failing tests for US1 scenarios 1-4 (a complete valid content
+- [X] T009 [US1] Write failing tests for US1 scenarios 1-4 (a complete valid content
       set loads as one successful package containing every catalog's validated
       content; a problem in exactly one catalog kind is reported, identifying which
       catalog and which entry; unrelated problems in several different catalog kinds
@@ -94,7 +94,7 @@ every mistake is reported together.
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Implement `loadContentPack` steps 1-3, 5 (decode `ContentFileDto`,
+- [X] T010 [US1] Implement `loadContentPack` steps 1-3, 5 (decode `ContentFileDto`,
       catching `SerializationException` into `MalformedContent`; map every DTO list
       via `toCore()`; run `validateCatalog`/`validateStatusEffectCatalog`/
       `validateSynergyCatalog`/`validateLimitBreakCatalog`/`validateSummonCatalog`
@@ -122,7 +122,7 @@ validation unchanged.
 
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
-- [ ] T011 [US2] Write failing tests for US2 scenarios 1-3 covering all four
+- [X] T011 [US2] Write failing tests for US2 scenarios 1-3 covering all four
       cross-catalog checks (a class's limit break id with no matching
       `LimitBreakDefinition` is reported as a dangling reference; a synergy skill id
       absent from `knownSkills` is reported; a status effect's stat-modifier
@@ -135,9 +135,9 @@ validation unchanged.
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] Implement `validateCrossCatalogReferences` (the four checks, per
+- [X] T012 [US2] Implement `validateCrossCatalogReferences` (the four checks, per
       data-model.md) in `MAIN/CrossCatalogValidation.kt`
-- [ ] T013 [US2] Wire `validateCrossCatalogReferences` into `loadContentPack` as
+- [X] T013 [US2] Wire `validateCrossCatalogReferences` into `loadContentPack` as
       step 4, run unconditionally against the raw `Catalog` regardless of whether the
       core catalog's own validation (step 3) succeeded — cross-catalog problems are
       always reported even when the core catalog also independently failed in
@@ -160,14 +160,14 @@ every catalog kind this engine supports.
 
 ### Tests for User Story 3 (write first, must fail) ⚠️
 
-- [ ] T014 [US3] Write failing tests for US3 scenarios 1-2 (`loadContentPack(DEMO_CONTENT_JSON)`
+- [X] T014 [US3] Write failing tests for US3 scenarios 1-2 (`loadContentPack(DEMO_CONTENT_JSON)`
       succeeds with zero reported problems; the resulting package has at least one
       entry in every catalog kind — classes/characters/enemies, status effects,
       synergies, limit breaks, summons) in `TEST/DemoContentTest.kt`
 
 ### Implementation for User Story 3
 
-- [ ] T015 [US3] Author `DEMO_CONTENT_JSON` (per research R5, a plain Kotlin string
+- [X] T015 [US3] Author `DEMO_CONTENT_JSON` (per research R5, a plain Kotlin string
       constant) in `MAIN/demo/DemoContent.kt`
 
 **Checkpoint**: All three user stories independently green.
@@ -176,17 +176,17 @@ every catalog kind this engine supports.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T016 [P] Add a specs-001-006-contract-preservation test: every DTO's
+- [X] T016 [P] Add a specs-001-006-contract-preservation test: every DTO's
       `toCore()` mapping produces a value structurally equal to constructing the
       real `core` type directly with the same field values (FR-009) in
       `TEST/ContentContractTest.kt`
-- [ ] T017 [P] Add a cross-cutting determinism property test: the same content text,
+- [X] T017 [P] Add a cross-cutting determinism property test: the same content text,
       loaded twice, produces structurally identical `ContentLoadResult`s, across a
       mix of valid and intentionally-broken generated content (FR-007, SC-005) in
       `TEST/ContentLoaderDeterminismTest.kt`
-- [ ] T018 KDoc pass on all public `content` package files (surface listed in
+- [X] T018 KDoc pass on all public `content` package files (surface listed in
       contracts/content-loading-api.md)
-- [ ] T019 Run quickstart validation: `./gradlew :content:allTests` green on
+- [X] T019 Run quickstart validation: `./gradlew :content:allTests` green on
       JVM+JS; update `specs/007-content-loading/quickstart.md` mapping table if any
       test file names drifted; update root `README.md` to mark spec 007 ✅
       implemented and the `content` module status line

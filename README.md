@@ -9,7 +9,7 @@ Multiplatform, developed end-to-end with **Spec-Driven Development** using
 | Module | Status | Purpose |
 |---|---|---|
 | `core` | specs 001-006 implemented | Pure KMP combat engine (no platform/UI deps, seeded RNG, data-driven) — combatant/class model + action/damage resolution + turn scheduler + status effects + battle events/synergies + limit breaks/summons done |
-| `content` | scaffolded | Content definitions (classes, skills, spells, enemies…) + loaders |
+| `content` | spec 007 implemented | Content definitions (classes, skills, spells, enemies…) + loaders — `loadContentPack` parses/validates a full content pack, including cross-catalog reference checks |
 | `demo-console` | scaffolded | JVM console demo (Final Fantasy-style), first end-to-end validation |
 | `tactical` | reserved slot | Optional grid-positioning module (future milestone, not a Gradle module yet) |
 | `demo-app` | reserved slot | Compose Multiplatform app for Android/web (future milestone) |
@@ -47,7 +47,13 @@ Specs live under `specs/`. Planned spec sequence:
    fields and delegating to `resolveAction` unmodified (limit breaks reuse
    `CommandKind.SKILL`, summons reuse `CommandKind.SUMMON`, which spec 001 already
    declared for exactly this purpose).
-7. 007 — Content loading (`content` module).
+7. **007 — Content loading** ✅ *(implemented)*: `loadContentPack(text): ContentLoadResult`
+   in the `content` module — DTOs + mapping functions (not retrofitted annotations)
+   keep specs 001-006 untouched, every existing `validate*Catalog` function runs
+   unconditionally, and four cross-catalog reference checks catch dangling
+   identifiers no single spec's own validation can see (e.g. a class's limit break
+   id that has no matching `LimitBreakDefinition`). Ships a small demo content pack
+   exercising every mechanic.
 8. 008 — Console demo (`demo-console`).
 
 ## Build

@@ -82,8 +82,8 @@ already-stable shape for no benefit and drift if `Catalog` ever gains a field).
 ## R3 — Four cross-catalog reference checks, each already implied by an existing spec's own design
 
 **Decision**: `validateCrossCatalogReferences(catalog: Catalog, statusEffects:
-StatusEffectCatalog, synergies: SynergyCatalog, limitBreaks: LimitBreakCatalog):
-List<ContentProblem>` takes the *raw* `Catalog` (not `ValidatedCatalog` — every field
+StatusEffectCatalog, synergies: SynergyCatalog, limitBreaks: LimitBreakCatalog,
+summons: SummonCatalog): List<ContentProblem>` takes the *raw* `Catalog` (not `ValidatedCatalog` — every field
 these checks read, `knownLimitBreaks`/`knownSkills`/`customStats`/`elements`, already
 lives directly on `Catalog`; the validated wrapper's lookup methods aren't needed
 here), which also means these checks can run unconditionally regardless of whether

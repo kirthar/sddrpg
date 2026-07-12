@@ -99,6 +99,7 @@ fun validateCrossCatalogReferences(
     statusEffects: StatusEffectCatalog,
     synergies: SynergyCatalog,
     limitBreaks: LimitBreakCatalog,
+    summons: SummonCatalog,
 ): List<ContentProblem.DanglingReference>
 
 // ContentLoader.kt

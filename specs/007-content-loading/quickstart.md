@@ -23,12 +23,12 @@ previously-empty module.
 | US1 scenario 1 (complete valid content loads as one package) | `content/ContentLoaderTest` |
 | US1 scenario 2 (a single-catalog problem is reported, identifying catalog+entry) | `content/ContentLoaderTest` |
 | US1 scenario 3 (multiple unrelated problems across catalog kinds all reported together) | `content/ContentLoaderTest` |
-| US1 scenario 4 (an omitted optional catalog loads as empty) | `content/ContentFileDtoTest` |
-| US2 scenarios 1-3 (dangling cross-catalog reference caught; correct reference passes; several dangling references all reported) | `content/CrossCatalogValidationTest` |
+| US1 scenario 4 (an omitted optional catalog loads as empty) | `content/ContentLoaderTest` |
+| US2 scenarios 1-3 (dangling cross-catalog reference caught; correct reference passes; several dangling references all reported) | `content/CrossCatalogValidationTest` (unit-level, plus one end-to-end case wired through `loadContentPack`) |
 | US3 scenarios 1-2 (shipped demo content loads with zero problems, every catalog kind has ≥1 entry) | `content/DemoContentTest` |
 | FR-004 (all four cross-catalog checks: limit breaks, synergy skills, stat modifiers, elements) | `content/CrossCatalogValidationTest` |
 | FR-007/SC-005 (determinism) | `content/ContentLoaderDeterminismTest`: property test over varied valid/invalid content |
-| FR-009 (specs 001-006 contracts untouched) | `content/ContentContractTest`: compilation itself is partial proof — no source changes to any `core` package; mapping every DTO field to its `core` type's constructor round-trips correctly |
+| FR-009 (specs 001-006 contracts untouched) | `content/DtoMappingTest`: every DTO's `toCore()` mapping round-trips to the exact `core` value; `content/ContentContractTest`: `loadContentPack`'s reported errors are byte-for-byte what calling each spec's own `validate*Catalog` directly produces — compilation itself is further proof, no source changes to any `core` package |
 | Edge cases (malformed JSON reported distinctly from validation problems; parse+cross-catalog problems together; repeated load is deterministic) | `content/ContentLoaderTest`, `content/ContentLoaderDeterminismTest` |
 
 ## Expected outcome
