@@ -152,7 +152,11 @@ never receives a turn while active, and resumes once the effect ends.
       `ActiveTimeBattleScheduler.nextTurn` it is never the one reported ready; once the
       effect ends — removed via a tick reaching 0 — normal scheduling resumes for that
       combatant; among otherwise-eligible combatants only non-incapacitated ones are
-      ever reported) in `TEST/IncapacitateTest.kt`
+      ever reported) **plus** a combined-kinds case (FR-009, research R5): a
+      simultaneous Speed-increasing stat modifier does NOT offset an active
+      Incapacitate effect — effective Speed is still forced to 0, proving the two
+      effect kinds apply independently and the Incapacitate clamp always wins — in
+      `TEST/IncapacitateTest.kt`
 
 ### Implementation for User Story 3
 
@@ -234,6 +238,12 @@ than adding to it, with unchanged stat-modifier magnitude.
       `StatusEffectState`/`BattleState` and the same sequence of apply/tick/remove
       calls, replayed twice, produce structurally identical results (SC-007) in
       `TEST/StatusDeterminismTest.kt`
+- [ ] T021a [P] Add an edge-case test + guard: `tickStatusEffects`/
+      `deriveEffectiveBattleState` given a `StatusEffectState` referencing a
+      `StatusEffectId` absent from the passed-in `StatusEffectCatalog` skips that
+      stale reference gracefully rather than crashing (analyze finding F2 — behavior
+      was previously undefined) in `TEST/StatusEffectLifecycleTest.kt`, implemented in
+      `MAIN/StatusEffectResolution.kt`
 - [ ] T022 KDoc pass on all public `status` package files (surface listed in
       contracts/status-api.md)
 - [ ] T023 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;

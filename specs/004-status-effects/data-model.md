@@ -34,7 +34,7 @@ Sealed: `StatModifier(statId: StatId, delta: Int)` | `Incapacitate` |
 ### ActiveEffect
 | Field | Type | Rules |
 |---|---|---|
-| effectId | StatusEffectId | must resolve in the `StatusEffectCatalog` used to apply/tick it |
+| effectId | StatusEffectId | expected to resolve in the `StatusEffectCatalog` used to apply/tick it; if a stale reference is ever encountered (analyze finding F2), it is skipped gracefully during `tickStatusEffects`/`deriveEffectiveBattleState` rather than throwing |
 | remainingDuration | Int | ≥ 0; reaching 0 on a tick removes the instance (R7) |
 
 ### StatusEffectState

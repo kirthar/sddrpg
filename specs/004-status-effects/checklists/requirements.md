@@ -40,3 +40,8 @@
   technical question) was resolved via Assumptions with stated reasoning during
   `/speckit-specify`, same convention as specs 001–003.
 - Spec is now ready for `/speckit-plan`.
+- `/speckit-analyze` (post-tasks) found 0 critical, 1 MEDIUM, 1 LOW finding, both
+  remediated: T014 now covers a combined stat-modifier + incapacitate scenario
+  (FR-009's independence guarantee, research R5's clamp-can't-be-offset claim); a new
+  T021a plus a data-model.md note defines skip-gracefully behavior for a stale
+  `effectId` reference during tick (previously undefined).
