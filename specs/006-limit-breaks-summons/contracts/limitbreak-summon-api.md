@@ -84,6 +84,7 @@ fun deductResource(state: ResourceState, combatantId: CombatantId, amount: Int):
 sealed interface LimitBreakError {
     data class NoActiveLimitBreak(val actorId: CombatantId) : LimitBreakError
     data class GaugeNotFull(val actorId: CombatantId, val current: Int, val threshold: Int) : LimitBreakError
+    data class ActionRejected(val actorId: CombatantId, val underlying: ActionError) : LimitBreakError
 }
 
 sealed interface LimitBreakResolutionResult {
@@ -102,6 +103,7 @@ fun resolveLimitBreak(
 sealed interface SummonError {
     data class UnknownSummon(val summonId: SummonId) : SummonError
     data class InsufficientResource(val actorId: CombatantId, val required: Int, val available: Int) : SummonError
+    data class ActionRejected(val actorId: CombatantId, val underlying: ActionError) : SummonError
 }
 
 sealed interface SummonResolutionResult {
@@ -123,7 +125,7 @@ data class GaugeFull(val combatantId: CombatantId) : BattleEvent
 data class LimitBreakUsed(val combatantId: CombatantId, val limitBreakId: LimitBreakId) : BattleEvent
 data class SummonCast(val combatantId: CombatantId, val summonId: SummonId) : BattleEvent
 
-fun eventsFromGaugeCharge(before: LimitGaugeState, after: LimitGaugeState, catalog: LimitBreakCatalog): List<BattleEvent>
+fun eventsFromGaugeCharge(battle: BattleState, before: LimitGaugeState, after: LimitGaugeState, catalog: LimitBreakCatalog): List<BattleEvent>
 
 fun eventsFromLimitBreak(
     oldState: BattleState,
@@ -181,7 +183,7 @@ val actionEvents = eventsFromResolution(battle, action, result)
 if (result is ActionResolutionResult.Resolved) battle = result.newState
 val gaugeBefore = gauges
 gauges = chargeLimitGauge(gauges, battle, actionEvents, limitBreakCatalog)
-log = log.append(actionEvents + eventsFromGaugeCharge(gaugeBefore, gauges, limitBreakCatalog))
+log = log.append(actionEvents + eventsFromGaugeCharge(battle, gaugeBefore, gauges, limitBreakCatalog))
 
 // Using a limit break once a gauge is full:
 val oldBattle = battle

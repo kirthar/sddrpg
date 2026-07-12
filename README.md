@@ -8,7 +8,7 @@ Multiplatform, developed end-to-end with **Spec-Driven Development** using
 
 | Module | Status | Purpose |
 |---|---|---|
-| `core` | specs 001-005 implemented | Pure KMP combat engine (no platform/UI deps, seeded RNG, data-driven) — combatant/class model + action/damage resolution + turn scheduler + status effects + battle events/synergies done |
+| `core` | specs 001-006 implemented | Pure KMP combat engine (no platform/UI deps, seeded RNG, data-driven) — combatant/class model + action/damage resolution + turn scheduler + status effects + battle events/synergies + limit breaks/summons done |
 | `content` | scaffolded | Content definitions (classes, skills, spells, enemies…) + loaders |
 | `demo-console` | scaffolded | JVM console demo (Final Fantasy-style), first end-to-end validation |
 | `tactical` | reserved slot | Optional grid-positioning module (future milestone, not a Gradle module yet) |
@@ -41,7 +41,12 @@ Specs live under `specs/`. Planned spec sequence:
    (pure event-derivation over specs 002-004's unmodified outputs — no callbacks) and a
    data-driven `SynergyDefinition` (two required skills, same-target, turn window,
    bonus) detected by a nearest-prior-match scan over the log.
-6. 006 — Limit breaks & summons.
+6. **006 — Limit breaks & summons** ✅ *(implemented)*: a per-combatant `LimitGaugeState`
+   charged purely by scanning spec 005's already-derived `BattleEvent.DamageDealt`
+   events; both mechanics resolve by synthesizing a `CombatAction` from existing
+   fields and delegating to `resolveAction` unmodified (limit breaks reuse
+   `CommandKind.SKILL`, summons reuse `CommandKind.SUMMON`, which spec 001 already
+   declared for exactly this purpose).
 7. 007 — Content loading (`content` module).
 8. 008 — Console demo (`demo-console`).
 

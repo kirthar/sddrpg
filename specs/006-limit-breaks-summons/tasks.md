@@ -30,7 +30,7 @@ new file only — `BattleEvent.kt` itself is never touched, research R4),
 
 ## Phase 1: Setup
 
-- [ ] T001 [P] Add reusable limitbreak-package test fixtures (a battle with one
+- [X] T001 [P] Add reusable limitbreak-package test fixtures (a battle with one
       combatant whose class declares a limit break with a known threshold and MP for
       summon casting, plus an enemy target, reusing spec 001-005's roster/`BattleState`
       fixture patterns) in `TEST/LimitBreakFixtures.kt`
@@ -44,20 +44,20 @@ state shapes (data only, no operations yet — those are built incrementally in 
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 [P] Write failing tests for `LimitBreakCatalog`/`SummonCatalog` validation
+- [X] T002 [P] Write failing tests for `LimitBreakCatalog`/`SummonCatalog` validation
       (`DuplicateId` and `NonPositiveThreshold` for limit breaks; `DuplicateId` and
       `NegativeCost` for summons, both accumulated in one pass — mirrors spec
       001/004/005's `*CatalogError` convention) in `TEST/LimitBreakCatalogValidationTest.kt`
-- [ ] T003 Implement `LimitBreakDefinition`, `LimitBreakCatalog`,
+- [X] T003 Implement `LimitBreakDefinition`, `LimitBreakCatalog`,
       `LimitBreakCatalogError`, `LimitBreakCatalogResult`, and
       `validateLimitBreakCatalog` (accumulate-all, per data-model.md) in
       `MAIN/LimitBreakDefinition.kt`
-- [ ] T004 Implement `SummonId`, `SummonDefinition`, `SummonCatalog`,
+- [X] T004 Implement `SummonId`, `SummonDefinition`, `SummonCatalog`,
       `SummonCatalogError`, `SummonCatalogResult`, and `validateSummonCatalog` in
       `MAIN/SummonDefinition.kt`
-- [ ] T005 [P] Implement `LimitGaugeState` data shape (data only) in
+- [X] T005 [P] Implement `LimitGaugeState` data shape (data only) in
       `MAIN/LimitGaugeState.kt`
-- [ ] T006 [P] Implement `ResourceState` data shape and `BattleState.initialResourceState()`
+- [X] T006 [P] Implement `ResourceState` data shape and `BattleState.initialResourceState()`
       in `MAIN/ResourceState.kt`
 
 **Checkpoint**: `:core:allTests` green on JVM+JS — foundation ready, stories can start.
@@ -76,7 +76,7 @@ starting at zero, never exceeding the threshold.
 
 ### Tests for User Story 1 (write first, must fail) ⚠️
 
-- [ ] T007 [US1] Write failing tests for US1 scenarios 1-3 (a fresh gauge rises by the
+- [X] T007 [US1] Write failing tests for US1 scenarios 1-3 (a fresh gauge rises by the
       exact damage amount from a `DamageDealt` event targeting that combatant; damage
       that would push the gauge past threshold clamps it at threshold, never exceeding;
       a combatant whose class declares no limit break never gets a gauge entry) plus
@@ -87,7 +87,7 @@ starting at zero, never exceeding the threshold.
 
 ### Implementation for User Story 1
 
-- [ ] T008 [US1] Implement `chargeLimitGauge` (per `DamageDealt` event: look up the
+- [X] T008 [US1] Implement `chargeLimitGauge` (per `DamageDealt` event: look up the
       target's active limit break via `capabilities.limitBreaks.firstOrNull()`,
       research R5; skip if none or if its id is absent from the catalog; otherwise
       `(current + amount).coerceAtMost(threshold)`) in `MAIN/LimitGaugeState.kt`
@@ -108,7 +108,7 @@ guarantees as any other resolved action, and that the gauge is back to zero afte
 
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
-- [ ] T009 [US2] Write failing tests for US2 scenarios 1-3 (a below-threshold attempt
+- [X] T009 [US2] Write failing tests for US2 scenarios 1-3 (a below-threshold attempt
       is rejected as `LimitBreakError.GaugeNotFull`, never silently ignored; a
       threshold-reached use resolves within the same [0, maximum] health bounds every
       other resolved action respects; the gauge is reset to zero immediately after a
@@ -119,7 +119,7 @@ guarantees as any other resolved action, and that the gauge is back to zero afte
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] Implement `LimitBreakError`, `LimitBreakResolutionResult`, and
+- [X] T010 [US2] Implement `LimitBreakError`, `LimitBreakResolutionResult`, and
       `resolveLimitBreak` (per data-model.md's four-step algorithm) in
       `MAIN/LimitBreakSummonResolution.kt`
 
@@ -142,7 +142,7 @@ deducted.
 
 ### Tests for User Story 3 (write first, must fail) ⚠️
 
-- [ ] T011 [US3] Write failing tests for US3 scenarios 1-3 (sufficient resource
+- [X] T011 [US3] Write failing tests for US3 scenarios 1-3 (sufficient resource
       resolves the summon's effect and deducts exactly its cost; insufficient resource
       rejects with nothing deducted; the battle's participant count is unchanged
       before and after a summon resolves) plus the exact-cost-equals-available-resource
@@ -151,8 +151,8 @@ deducted.
 
 ### Implementation for User Story 3
 
-- [ ] T012 [P] [US3] Implement `deductResource` in `MAIN/ResourceState.kt`
-- [ ] T013 [US3] Implement `SummonError`, `SummonResolutionResult`, and
+- [X] T012 [P] [US3] Implement `deductResource` in `MAIN/ResourceState.kt`
+- [X] T013 [US3] Implement `SummonError`, `SummonResolutionResult`, and
       `resolveSummon` (per data-model.md's four-step algorithm) in
       `MAIN/LimitBreakSummonResolution.kt`
 
@@ -173,7 +173,7 @@ shape.
 
 ### Tests for User Story 4 (write first, must fail) ⚠️
 
-- [ ] T014 [US4] Write failing tests for US4 scenarios 1-3 (a gauge crossing from
+- [X] T014 [US4] Write failing tests for US4 scenarios 1-3 (a gauge crossing from
       below threshold to at-or-above threshold produces exactly one `GaugeFull` event,
       and further charging while already at threshold produces no additional one; a
       resolved limit break produces a `LimitBreakUsed` event identifying the limit
@@ -184,7 +184,7 @@ shape.
 
 ### Implementation for User Story 4
 
-- [ ] T015 [US4] Implement `GaugeFull`, `LimitBreakUsed`, `SummonCast` (new
+- [X] T015 [US4] Implement `GaugeFull`, `LimitBreakUsed`, `SummonCast` (new
       `BattleEvent` variants) and `eventsFromGaugeCharge`/`eventsFromLimitBreak`/
       `eventsFromSummon` in `MAIN_EVENT/LimitBreakSummonEvents.kt` (new file — do not
       edit `BattleEvent.kt`)
@@ -195,17 +195,17 @@ shape.
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T016 [P] Add a specs-001-005-contract-preservation test: a battle resolved with
+- [X] T016 [P] Add a specs-001-005-contract-preservation test: a battle resolved with
       empty `LimitBreakCatalog`/`SummonCatalog` produces the exact same `BattleState`/
       `ActionResolutionResult` sequence as calling spec 002 directly with no
       `limitbreak` package involved at all (FR-012) in `TEST/LimitBreakContractTest.kt`
-- [ ] T017 [P] Add a cross-cutting determinism property test: the same starting
+- [X] T017 [P] Add a cross-cutting determinism property test: the same starting
       `LimitGaugeState`/`ResourceState`/`BattleState` and the same sequence of
       charge/resolve calls, replayed twice, produce structurally identical results
       (FR-011, SC-005) in `TEST/LimitBreakDeterminismTest.kt`
-- [ ] T018 KDoc pass on all public `limitbreak` package files and the new `event`
+- [X] T018 KDoc pass on all public `limitbreak` package files and the new `event`
       file (surface listed in contracts/limitbreak-summon-api.md)
-- [ ] T019 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;
+- [X] T019 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;
       update `specs/006-limit-breaks-summons/quickstart.md` mapping table if any test
       file names drifted; update root `README.md` to mark spec 006 ✅ implemented
 
