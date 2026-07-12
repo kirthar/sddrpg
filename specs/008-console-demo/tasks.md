@@ -34,7 +34,7 @@ every mechanic, which depends on US1+US2 already working).
 
 ## Phase 1: Setup
 
-- [ ] T001 Add kotest JVM test dependencies (`kotest-runner-junit5`,
+- [X] T001 Add kotest JVM test dependencies (`kotest-runner-junit5`,
       `kotest-framework-engine`, `kotest-assertions-core`) as `testImplementation` to
       `demo-console/build.gradle.kts` and a `tasks.withType<Test>().configureEach { useJUnitPlatform() }`
       block, matching `core`/`content`'s existing JVM test wiring — `demo-console` has
@@ -51,37 +51,37 @@ user story's battle loop depends on. No loop/rendering logic yet.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 [P] Write failing tests for `BattleOutcome`/`BattleState.outcome()`
+- [X] T002 [P] Write failing tests for `BattleOutcome`/`BattleState.outcome()`
       (`Ongoing` while both sides have a living participant; `Victory` when every
       `OPPONENT` participant is defeated; `Defeat` when every `PLAYER` participant is
       defeated; simultaneous-defeat tie-break resolves to `Defeat`, checked before
       `Victory`) in `CORE-TEST/battle/BattleOutcomeTest.kt`
-- [ ] T003 [P] Write failing tests for `selectAutomaticCommand`/`selectAutomaticSkill`/
+- [X] T003 [P] Write failing tests for `selectAutomaticCommand`/`selectAutomaticSkill`/
       `selectAutomaticTarget` (first matching command in preference order; `null` when
       none match; skill selection is deterministic regardless of `Set` iteration order
       — assert with a multi-skill fixture; target is the living opposing participant
       with lowest current health; ties broken by participant order; `null` for an
       unknown actor or no living opposing participant) in `CORE-TEST/ai/AutomaticActionRuleTest.kt`
-- [ ] T004 Implement `BattleOutcome` sealed type and `BattleState.outcome()` in
+- [X] T004 Implement `BattleOutcome` sealed type and `BattleState.outcome()` in
       `CORE-MAIN/battle/BattleOutcome.kt`
-- [ ] T005 Implement `selectAutomaticCommand`, `selectAutomaticSkill`,
+- [X] T005 Implement `selectAutomaticCommand`, `selectAutomaticSkill`,
       `selectAutomaticTarget` in `CORE-MAIN/ai/AutomaticActionRule.kt`
 
 **Checkpoint**: `:core:allTests` green on JVM+JS.
 
-- [ ] T006 [P] Write failing tests for `DemoActionDefinition`/`DEMO_ACTIONS` (exactly
+- [X] T006 [P] Write failing tests for `DemoActionDefinition`/`DEMO_ACTIONS` (exactly
       one entry per `(command, skillId)` pair covering ATTACK/`cleave`/`fira`; every
       non-null `skillId` referenced actually appears in `DEMO_CONTENT_JSON`'s
       `knownSkills`; the `find(command, skillId)` lookup helper returns the right
       entry and `null` for an unregistered pair) in `CONTENT-TEST/demo/DemoActionsTest.kt`
-- [ ] T007 [P] Write failing tests for `buildDemoBattleState` (the bomb enemy's
+- [X] T007 [P] Write failing tests for `buildDemoBattleState` (the bomb enemy's
       `capabilities.commands` contains `ATTACK`; every non-enemy participant's
       `capabilities` is unchanged from what `RosterBuilder` alone produces; repeated
       calls return structurally-equal `BattleState`s; an enemy with no declared
       skills does NOT get `CommandKind.SKILL` granted) in `CONTENT-TEST/demo/DemoRosterTest.kt`
-- [ ] T008 [P] Implement `DemoActionDefinition`, `DEMO_ACTIONS`, and the `find` lookup
+- [X] T008 [P] Implement `DemoActionDefinition`, `DEMO_ACTIONS`, and the `find` lookup
       helper in `CONTENT-MAIN/demo/DemoActions.kt`
-- [ ] T009 [P] Implement the `Combatant`-delegating command-grant wrapper and
+- [X] T009 [P] Implement the `Combatant`-delegating command-grant wrapper and
       `buildDemoBattleState` in `CONTENT-MAIN/demo/DemoRoster.kt`
 
 **Checkpoint**: `:content:allTests` green on JVM+JS — foundation ready, `demo-console`
@@ -104,33 +104,33 @@ the identical scripted input list returns the identical outcome.
 
 ### Tests for User Story 1 (write first, must fail) ⚠️
 
-- [ ] T010 [US1] Write failing tests for human-turn gating (a prompt is emitted only
+- [X] T010 [US1] Write failing tests for human-turn gating (a prompt is emitted only
       on a human-controlled combatant's turn; a valid submission resolves and the
       scheduler advances; a `resolveAction`-rejected submission emits the rejection
       reason in plain language and reprompts without consuming the turn; unparseable
       input reprompts the same way) in `DEMO-TEST/BattleLoopTest.kt`
-- [ ] T011 [US1] Write failing tests for automatic-turn selection (no prompt/`readInput`
+- [X] T011 [US1] Write failing tests for automatic-turn selection (no prompt/`readInput`
       call on an automatically-controlled combatant's turn; a valid action is selected
       via `selectAutomaticCommand`/`selectAutomaticSkill`/`selectAutomaticTarget` and
       resolved; a combatant with no usable command is skipped — `markSpent` still
       called — without ending the battle or emitting a rejection) in `DEMO-TEST/BattleLoopTest.kt`
-- [ ] T012 [US1] Write failing tests for conclusion handling (the loop returns the
+- [X] T012 [US1] Write failing tests for conclusion handling (the loop returns the
       instant `BattleState.outcome()` is no longer `Ongoing`, matching that exact
       value; `readInput` returning `null` while awaiting a human submission ends the
       loop gracefully without crashing, returning the current — possibly `Ongoing` —
       outcome) in `DEMO-TEST/BattleLoopTest.kt`
-- [ ] T013 [P] [US1] Write a failing determinism test (the same starting session,
+- [X] T013 [P] [US1] Write a failing determinism test (the same starting session,
       content, and scripted `readInput` sequence, run twice, produce an identical
       returned `BattleOutcome` and an identical sequence of `emit` calls) in
       `DEMO-TEST/BattleLoopDeterminismTest.kt`
 
 ### Implementation for User Story 1
 
-- [ ] T014 [US1] Implement `BattleSession` and a `newBattleSession()` factory (battle
+- [X] T014 [US1] Implement `BattleSession` and a `newBattleSession()` factory (battle
       from `buildDemoBattleState()`, schedule from
       `ActiveTimeBattleScheduler.initialSchedule`, empty effects/gauges/log, resources
       from `battle.initialResourceState()`) in `DEMO-MAIN/BattleSession.kt`
-- [ ] T015 [US1] Implement `runBattleLoop`: step the scheduler via `nextTurn`; on a
+- [X] T015 [US1] Implement `runBattleLoop`: step the scheduler via `nextTurn`; on a
       human turn, prompt/parse/gate via `resolveAction` with reprompt-on-rejection and
       graceful EOF handling (T010/T012); on an automatic turn, select via
       `core.ai`'s three functions plus `DEMO_ACTIONS.find`, skipping the turn if no
@@ -158,21 +158,21 @@ turn begins.
 
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
-- [ ] T016 [P] [US2] Write failing tests for `BattleEvent.toDisplayText` covering every
+- [X] T016 [P] [US2] Write failing tests for `BattleEvent.toDisplayText` covering every
       subtype — `DamageDealt`/`HealingApplied` with and without an `actorId`,
       `StatusEffectApplied`, `StatusEffectExpired`, `CombatantDefeated`, `TurnGranted`,
       `SynergyTriggered`, `GaugeFull`, `LimitBreakUsed`, `SummonCast` — asserting
       combatant display names are resolved from `battle`, never raw ids, in
       `DEMO-TEST/ConsoleRenderingTest.kt`
-- [ ] T017 [US2] Write a failing test extending `BattleLoopTest` asserting `emit`
+- [X] T017 [US2] Write a failing test extending `BattleLoopTest` asserting `emit`
       receives rendered text (not raw event data) for every occurrence produced during
       a turn, in the order they were derived, in `DEMO-TEST/BattleLoopTest.kt`
 
 ### Implementation for User Story 2
 
-- [ ] T018 [P] [US2] Implement `BattleEvent.toDisplayText(battle)` covering every
+- [X] T018 [P] [US2] Implement `BattleEvent.toDisplayText(battle)` covering every
       subtype in `DEMO-MAIN/ConsoleRendering.kt`
-- [ ] T019 [US2] Wire `ConsoleRendering` into `runBattleLoop`'s per-turn event
+- [X] T019 [US2] Wire `ConsoleRendering` into `runBattleLoop`'s per-turn event
       emission (replacing any placeholder emission from T015) in `DEMO-MAIN/BattleLoop.kt`
 
 **Checkpoint**: US1 + US2 green together — a full, watchable battle, the feature's
