@@ -2,6 +2,7 @@ package io.github.kirthar.sddrpg.core.status
 
 import io.github.kirthar.sddrpg.core.action.BattleState
 import io.github.kirthar.sddrpg.core.model.CombatantId
+import io.github.kirthar.sddrpg.core.model.StatBlock
 
 /** Applies [effectId]'s definition to [combatantId]: adds it, or refreshes duration to full if already active (spec FR-008). */
 fun applyStatusEffect(
@@ -60,6 +61,39 @@ fun tickStatusEffects(
 
     val survivors = decremented.mapValues { (_, active) -> active.filter { it.remainingDuration > 0 } }
     return StatusTickResult(newBattle, StatusEffectState(survivors))
+}
+
+/**
+ * Produces the `BattleState` `resolveAction`/`nextTurn` should actually be called
+ * with: stat-modifier deltas applied additively per stat, floored at 0 (research R3).
+ * Participants with no active effects are returned byte-identical (FR-011).
+ */
+fun deriveEffectiveBattleState(
+    battle: BattleState,
+    effects: StatusEffectState,
+    catalog: StatusEffectCatalog,
+): BattleState {
+    val definitionsById = catalog.effects.associateBy { it.id }
+
+    val newParticipants = battle.participants.map { participant ->
+        val active = effects.active[participant.combatant.id] ?: return@map participant
+        val kinds = active.mapNotNull { definitionsById[it.effectId]?.kind }
+        if (kinds.isEmpty()) return@map participant
+
+        val deltasByStat = kinds.filterIsInstance<EffectKind.StatModifier>()
+            .groupBy { it.statId }
+            .mapValues { (_, modifiers) -> modifiers.sumOf { it.delta } }
+
+        if (deltasByStat.isEmpty()) return@map participant
+
+        val base = participant.combatant.stats
+        val adjusted = base.statIds.associateWith { statId ->
+            (base[statId] + (deltasByStat[statId] ?: 0)).coerceAtLeast(0)
+        }
+        participant.copy(combatant = EffectiveCombatant(participant.combatant, StatBlock(adjusted)))
+    }
+
+    return BattleState(newParticipants)
 }
 
 private fun applyTickDamage(battle: BattleState, combatantId: CombatantId, amount: Int): BattleState {

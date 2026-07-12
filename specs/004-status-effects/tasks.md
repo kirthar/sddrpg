@@ -110,11 +110,11 @@ the modified case with base stats identical in both runs.
 
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
-- [ ] T010 [P] [US2] Write failing tests for `EffectiveCombatant` (only `stats` is
+- [X] T010 [P] [US2] Write failing tests for `EffectiveCombatant` (only `stats` is
       overridden; `id`, `capabilities`, `affinities`, `decisionSource`, `kind`,
       `allegiance` all forward to the wrapped combatant unchanged — delegation
       correctness) in `TEST/EffectiveCombatantTest.kt`
-- [ ] T011 [P] [US2] Write failing tests for US2 scenarios 1–4 (an increased Defense
+- [X] T011 [P] [US2] Write failing tests for US2 scenarios 1–4 (an increased Defense
       modifier resolves to less damage than an unmodified attack; a decreased Defense
       modifier resolves to more; the combatant's own base stats are unchanged in both
       runs; two different modifiers on the same stat combine additively, not
@@ -123,9 +123,9 @@ the modified case with base stats identical in both runs.
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] Implement `EffectiveCombatant` (`Combatant by base`, overriding only
+- [X] T012 [US2] Implement `EffectiveCombatant` (`Combatant by base`, overriding only
       `stats`) in `MAIN/EffectiveCombatant.kt`
-- [ ] T013 [US2] Implement `deriveEffectiveBattleState`'s stat-modifier portion (group
+- [X] T013 [US2] Implement `deriveEffectiveBattleState`'s stat-modifier portion (group
       active `StatModifier` effects by `statId`, sum deltas, floor at 0, wrap only
       participants whose effective stats actually differ) in
       `MAIN/StatusEffectResolution.kt`
