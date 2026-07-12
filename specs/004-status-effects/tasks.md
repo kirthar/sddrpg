@@ -27,7 +27,7 @@ valuable, independently testable consequence built on US1's lifecycle, plus one 
 
 ## Phase 1: Setup
 
-- [ ] T001 [P] Add reusable status-effect test fixtures (a small
+- [X] T001 [P] Add reusable status-effect test fixtures (a small
       `StatusEffectCatalog` with one of each `EffectKind` — a stat modifier, an
       incapacitate, and a damage-over-time definition — reusing spec 002/003's
       `BattleState`/roster fixture patterns) in `TEST/StatusFixtures.kt`
@@ -41,17 +41,17 @@ logic yet — that's built incrementally in US1–US4.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 [P] Write failing tests for `StatusEffectCatalog` validation (duplicate
+- [X] T002 [P] Write failing tests for `StatusEffectCatalog` validation (duplicate
       `StatusEffectId` rejected, non-positive `duration` rejected, both accumulated in
       one pass — mirrors spec 001's `CatalogError` convention) in
       `TEST/StatusEffectCatalogValidationTest.kt`
-- [ ] T003 Implement `EffectKind` sealed interface (`StatModifier`, `Incapacitate`,
+- [X] T003 Implement `EffectKind` sealed interface (`StatModifier`, `Incapacitate`,
       `DamageOverTime`) in `MAIN/EffectKind.kt`
-- [ ] T004 Implement `StatusEffectDefinition`, `StatusEffectCatalog`,
+- [X] T004 Implement `StatusEffectDefinition`, `StatusEffectCatalog`,
       `StatusEffectCatalogError`, `StatusEffectCatalogResult`, and
       `validateStatusEffectCatalog` (accumulate-all, per data-model.md) in
       `MAIN/StatusEffectDefinition.kt`
-- [ ] T005 [P] Implement `ActiveEffect` and `StatusEffectState` data classes (data
+- [X] T005 [P] Implement `ActiveEffect` and `StatusEffectState` data classes (data
       shapes only, no operations yet) in `MAIN/StatusEffectState.kt`
 
 **Checkpoint**: `:core:allTests` green on JVM+JS — foundation ready, stories can start.
@@ -70,13 +70,13 @@ gone once its duration is exhausted, with no manual cleanup.
 
 ### Tests for User Story 1 (write first, must fail) ⚠️
 
-- [ ] T006 [P] [US1] Write failing tests for US1 scenarios 1–4 (application makes an
+- [X] T006 [P] [US1] Write failing tests for US1 scenarios 1–4 (application makes an
       effect immediately active; one tick decrements remaining duration by exactly 1;
       an effect at 1 remaining duration is gone — not just at 0 — after one more tick,
       with no separate removal call; applying as a resolved action's side effect needs
       no special wiring beyond calling `applyStatusEffect` after `resolveAction`) in
       `TEST/StatusEffectLifecycleTest.kt`
-- [ ] T007 [P] [US1] Write failing test for FR-007's uniform tick rule: an
+- [X] T007 [P] [US1] Write failing test for FR-007's uniform tick rule: an
       incapacitated combatant's own effect still decrements on a `tickStatusEffects`
       call even though that combatant is never the one whose turn triggered it (no
       special-casing by kind — every active effect on every combatant ticks every
@@ -84,11 +84,11 @@ gone once its duration is exhausted, with no manual cleanup.
 
 ### Implementation for User Story 1
 
-- [ ] T008 [US1] Implement `applyStatusEffect` and `removeStatusEffect` in
+- [X] T008 [US1] Implement `applyStatusEffect` and `removeStatusEffect` in
       `MAIN/StatusEffectResolution.kt` (reapplication replaces the existing
       `ActiveEffect` for that `(combatantId, effectId)` pair rather than appending,
       FR-008; removal is idempotent, edge case)
-- [ ] T009 [US1] Implement `tickStatusEffects`'s duration-decrement-and-expiry portion
+- [X] T009 [US1] Implement `tickStatusEffects`'s duration-decrement-and-expiry portion
       (`StatusTickResult`; decrement every active effect on every combatant by 1;
       remove any that reach 0) in `MAIN/StatusEffectResolution.kt` — damage-over-time's
       per-tick damage is deferred to US4; `newBattle` is unchanged from the input
