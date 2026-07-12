@@ -130,10 +130,10 @@ configured decision sources.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T028 [P] Add full-catalog JSON contract test: round-trip the complete example from `specs/001-combatant-class-model/contracts/catalog-api.md` (FR-014; strict parsing rejects unknown keys) in `TEST/catalog/ContractRoundTripTest.kt`
-- [ ] T029 [P] Add cross-cutting property test: catalog loaded twice ⇒ identical validated model, order-independent error accumulation (SC-006) in `TEST/catalog/CatalogDeterminismTest.kt`
-- [ ] T030 KDoc pass on the public API surface listed in contracts/catalog-api.md (all `MAIN/**` public types/functions); no formatting/rendering concerns in docs (Principle IV)
-- [ ] T031 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS; update `specs/001-combatant-class-model/quickstart.md` mapping table if any test file names drifted
+- [X] T028 [P] Add full-catalog JSON contract test: round-trip the complete example from `specs/001-combatant-class-model/contracts/catalog-api.md` (FR-014; strict parsing rejects unknown keys) in `TEST/catalog/ContractRoundTripTest.kt`
+- [X] T029 [P] Add cross-cutting property test: catalog loaded twice ⇒ identical validated model, order-independent error accumulation (SC-006) in `TEST/catalog/CatalogDeterminismTest.kt`
+- [X] T030 KDoc pass on the public API surface listed in contracts/catalog-api.md (all `MAIN/**` public types/functions); no formatting/rendering concerns in docs (Principle IV)
+- [X] T031 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS; update `specs/001-combatant-class-model/quickstart.md` mapping table if any test file names drifted
 
 ---
 

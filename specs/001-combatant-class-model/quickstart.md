@@ -19,16 +19,16 @@ All acceptance evidence for this feature is executable tests in
 
 | Spec item | Validation |
 |---|---|
-| US1 (classes grant capabilities) | `catalog/` tests: load fixture catalog, assert character capabilities equal class grants (scenarios 1–3) |
-| US1 scenario 4 + SC-005 (job change) | `combatant/` test: `withActiveClass` swap — capabilities change, identity/stats inputs don't |
-| US2 (archetypes) | `catalog/` tests: enemies expose archetype AI profile + reward tier; new enemy = data only |
-| US3 (uniform surface) | `combatant/RosterTest`: party member + enemy + temporary ally in one roster expose identical attribute surface; allegiance/kind axes correct (SC-003) |
-| FR-003 / SC-004 | test: `withDecisionSource` changes nothing else |
-| FR-008 (hybrid stats) | property test: every `StatBlock` contains the 8 core stats; custom stats must be declared |
-| FR-008a / SC-006 (determinism) | property tests: `statsAt` same inputs ⇒ same output; catalog load twice ⇒ identical models; `Linear`/`Table` curves non-negative, `Table` clamps |
-| FR-013 / SC-002 (validation) | `CatalogValidationTest`: fixtures with dangling refs, duplicate IDs, incomplete stat blocks, undeclared custom stats — every error reported, accumulated, naming the definition |
-| FR-014 (portability) | round-trip test: JSON → model → JSON structural equality on the contract example from [contracts/catalog-api.md](contracts/catalog-api.md) |
-| Edge cases | tests: empty-skill class valid, empty-commands class invalid, absent affinities ⇒ NEUTRAL, three instances of one enemy definition get distinct `CombatantId`s |
+| US1 (classes grant capabilities) | `catalog/ClassCapabilityTest` (scenarios 1–4), `catalog/DefinitionSerializationTest` |
+| US1 scenario 4 + SC-005 (job change) | `combatant/ClassChangeTest`: `withActiveClass` swap — capabilities and growth-derived stats change, identity/config don't |
+| US2 (archetypes) | `catalog/ArchetypeTest` (scenarios 1–3 + enemy-side validation), `catalog/EnemySerializationTest` |
+| US3 (uniform surface) | `combatant/RosterUniformityTest`: party member + enemy + temporary ally expose identical attribute surface; allegiance/kind axes correct (SC-003) |
+| FR-003 / SC-004 | `combatant/RosterUniformityTest`: `withDecisionSource` changes nothing else |
+| FR-008 (hybrid stats) | `model/StatBlockTest`: every `StatBlock` contains the 8 core stats; bounds enforced; custom stats allowed |
+| FR-008a / SC-006 (determinism) | `model/StatsAtTest`, `model/GrowthCurveTest`, `combatant/RosterDeterminismTest`, `catalog/CatalogDeterminismTest` |
+| FR-013 / SC-002 (validation) | `catalog/CatalogValidationTest` + `catalog/ArchetypeTest`: dangling refs, duplicate IDs, incomplete stat blocks, undeclared custom stats — every error accumulated, naming the definition |
+| FR-014 (portability) | `catalog/ContractRoundTripTest`: the full contract example deserializes, validates and round-trips; strict parsing rejects unknown keys |
+| Edge cases | `CatalogValidationTest` (empty-skill class valid, empty-commands invalid), `model/AffinityTest` (absent ⇒ NEUTRAL), `RosterDeterminismTest` (three instances of one definition get distinct `CombatantId`s) |
 
 ## Expected outcome
 
