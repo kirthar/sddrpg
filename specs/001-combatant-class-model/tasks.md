@@ -91,13 +91,13 @@ fixture, load + validate, assert each exposes its archetype's AI profile and tie
 
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
-- [ ] T019 [P] [US2] Write failing serialization round-trip tests for `ArchetypeDefinition` + `EnemyDefinition` (contract examples incl. `ABSORPTION`/`WEAKNESS` affinities) in `TEST/catalog/EnemySerializationTest.kt`
-- [ ] T020 [P] [US2] Write failing acceptance + validation tests for US2 scenarios 1–3 plus enemy→archetype, enemy→skill and archetype→aiProfile dangling refs, duplicate ArchetypeId/EnemyId, rewardTier ≥ 0, optional enemy skills default empty (extend fixtures, not files, of T012) in `TEST/catalog/ArchetypeTest.kt`
+- [X] T019 [P] [US2] Write failing serialization round-trip tests for `ArchetypeDefinition` + `EnemyDefinition` (contract examples incl. `ABSORPTION`/`WEAKNESS` affinities) in `TEST/catalog/EnemySerializationTest.kt`
+- [X] T020 [P] [US2] Write failing acceptance + validation tests for US2 scenarios 1–3 plus enemy→archetype, enemy→skill and archetype→aiProfile dangling refs, duplicate ArchetypeId/EnemyId, rewardTier ≥ 0, optional enemy skills default empty (extend fixtures, not files, of T012) in `TEST/catalog/ArchetypeTest.kt`
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Implement `ArchetypeDefinition` + `EnemyDefinition` in `MAIN/catalog/Definitions.kt` (extend from T016)
-- [ ] T022 [US2] Extend `Catalog`/`ValidatedCatalog` lookups and `validateCatalog` rules to archetypes/enemies in `MAIN/catalog/Catalog.kt` and `MAIN/catalog/CatalogValidation.kt`
+- [X] T021 [US2] Implement `ArchetypeDefinition` + `EnemyDefinition` in `MAIN/catalog/Definitions.kt` (extend from T016)
+- [X] T022 [US2] Extend `Catalog`/`ValidatedCatalog` lookups and `validateCatalog` rules to archetypes/enemies in `MAIN/catalog/Catalog.kt` and `MAIN/catalog/CatalogValidation.kt`
 
 **Checkpoint**: US1 and US2 both independently green.
 
@@ -115,14 +115,14 @@ configured decision sources.
 
 ### Tests for User Story 3 (write first, must fail) ⚠️
 
-- [ ] T023 [P] [US3] Write failing acceptance tests for US3 scenarios 1–3 (uniform surface across the three kinds; temporary ally = PLAYER allegiance + AI source; `withDecisionSource` changes nothing else per SC-004) in `TEST/combatant/RosterUniformityTest.kt`
-- [ ] T024 [P] [US3] Write failing determinism/identity tests (sequential `CombatantId` by insertion order; three enemies from one definition get distinct ids; same roster built twice ⇒ identical combatants per SC-006; enemy default decision source = archetype AI profile) in `TEST/combatant/RosterDeterminismTest.kt`
-- [ ] T025 [P] [US3] Write failing job-change tests (`withActiveClass` to valid class swaps capabilities and growth-derived stats, everything else intact per SC-005/R1) in `TEST/combatant/ClassChangeTest.kt`
+- [X] T023 [P] [US3] Write failing acceptance tests for US3 scenarios 1–3 (uniform surface across the three kinds; temporary ally = PLAYER allegiance + AI source; `withDecisionSource` changes nothing else per SC-004) in `TEST/combatant/RosterUniformityTest.kt`
+- [X] T024 [P] [US3] Write failing determinism/identity tests (sequential `CombatantId` by insertion order; three enemies from one definition get distinct ids; same roster built twice ⇒ identical combatants per SC-006; enemy default decision source = archetype AI profile) in `TEST/combatant/RosterDeterminismTest.kt`
+- [X] T025 [P] [US3] Write failing job-change tests (`withActiveClass` to valid class swaps capabilities and growth-derived stats, everything else intact per SC-005/R1) in `TEST/combatant/ClassChangeTest.kt`
 
 ### Implementation for User Story 3
 
-- [ ] T026 [US3] Implement `Combatant` (kind, allegiance, `CapabilitySet` derived at read time — characters: through active class; enemies: definition skills + archetype AI profile —, `DecisionSource`, `affinityTo` total lookup) + `withActiveClass`/`withDecisionSource` copies in `MAIN/combatant/Combatant.kt`
-- [ ] T027 [US3] Implement `RosterBuilder`/`Roster` (addPartyMember/addEnemy/addTemporaryAlly per contract; deterministic ids; level ≥ 1 for characters) in `MAIN/combatant/Roster.kt`
+- [X] T026 [US3] Implement `Combatant` (kind, allegiance, `CapabilitySet` derived at read time — characters: through active class; enemies: definition skills + archetype AI profile —, `DecisionSource`, `affinityTo` total lookup) + `withActiveClass`/`withDecisionSource` copies in `MAIN/combatant/Combatant.kt`
+- [X] T027 [US3] Implement `RosterBuilder`/`Roster` (addPartyMember/addEnemy/addTemporaryAlly per contract; deterministic ids; level ≥ 1 for characters) in `MAIN/combatant/Roster.kt`
 
 **Checkpoint**: all three stories independently green.
 
