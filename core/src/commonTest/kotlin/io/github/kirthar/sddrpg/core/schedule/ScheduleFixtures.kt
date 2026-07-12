@@ -43,6 +43,8 @@ val scheduleFixtureCatalog: ValidatedCatalog by lazy {
             // equal-speed pair, for tie-break and "different combatant next" scenarios
             CharacterDefinition(CharacterId("alpha"), "Alpha", ClassId("warrior"), statsWithSpeed(10)),
             CharacterDefinition(CharacterId("beta"), "Beta", ClassId("warrior"), statsWithSpeed(10)),
+            // Speed 0, for the "never becomes ready" edge case
+            CharacterDefinition(CharacterId("statue"), "Statue", ClassId("warrior"), statsWithSpeed(0)),
         ),
         enemies = listOf(
             EnemyDefinition(EnemyId("goblin"), "Goblin", ArchetypeId("common"), stats = statsWithSpeed(15)),
@@ -63,5 +65,18 @@ fun freshScheduleBattleState(): BattleState = RosterBuilder(scheduleFixtureCatal
 fun freshEqualSpeedBattleState(): BattleState = RosterBuilder(scheduleFixtureCatalog)
     .addPartyMember(CharacterId("alpha"), level = 1)
     .addPartyMember(CharacterId("beta"), level = 1)
+    .build()
+    .toBattleState()
+
+/** fast (Speed 30) and statue (Speed 0) — for the zero-Speed edge case. */
+fun freshZeroSpeedBattleState(): BattleState = RosterBuilder(scheduleFixtureCatalog)
+    .addPartyMember(CharacterId("fast"), level = 1)
+    .addPartyMember(CharacterId("statue"), level = 1)
+    .build()
+    .toBattleState()
+
+/** Every combatant has Speed 0 — for the all-non-positive-speed edge case. */
+fun freshAllZeroSpeedBattleState(): BattleState = RosterBuilder(scheduleFixtureCatalog)
+    .addPartyMember(CharacterId("statue"), level = 1)
     .build()
     .toBattleState()

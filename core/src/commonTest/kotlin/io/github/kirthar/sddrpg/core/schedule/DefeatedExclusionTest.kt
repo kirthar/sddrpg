@@ -4,6 +4,7 @@ import io.github.kirthar.sddrpg.core.action.BattleState
 import io.github.kirthar.sddrpg.core.model.CombatantId
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 /** US2 scenarios 1-3 plus FR-009/SC-005: defeated combatants are never scheduled. */
@@ -27,7 +28,7 @@ class DefeatedExclusionTest : StringSpec({
         repeat(50) {
             val ready = ActiveTimeBattleScheduler.nextTurn(schedule, state)
                 .shouldBeInstanceOf<ScheduleResult.Ready<AtbScheduleState>>()
-            (ready.combatantId == fastId) shouldBe false
+            ready.combatantId shouldNotBe fastId
         }
     }
 
@@ -46,7 +47,7 @@ class DefeatedExclusionTest : StringSpec({
         repeat(50) {
             val ready = ActiveTimeBattleScheduler.nextTurn(schedule, defeatedState)
                 .shouldBeInstanceOf<ScheduleResult.Ready<AtbScheduleState>>()
-            (ready.combatantId == fastId) shouldBe false
+            ready.combatantId shouldNotBe fastId
             schedule = ActiveTimeBattleScheduler.markSpent(ready.advancedSchedule, ready.combatantId)
         }
     }
@@ -60,7 +61,7 @@ class DefeatedExclusionTest : StringSpec({
         repeat(50) {
             val ready = ActiveTimeBattleScheduler.nextTurn(schedule, state)
                 .shouldBeInstanceOf<ScheduleResult.Ready<AtbScheduleState>>()
-            (ready.combatantId == goblinId) shouldBe false
+            ready.combatantId shouldNotBe goblinId
             schedule = ActiveTimeBattleScheduler.markSpent(ready.advancedSchedule, ready.combatantId)
         }
     }

@@ -166,12 +166,12 @@ verify both runs produce the identical turn order with the same tie resolution.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T017 [P] Write and confirm the zero-Speed edge case (a combatant with Speed ≤ 0
+- [X] T017 [P] Write and confirm the zero-Speed edge case (a combatant with Speed ≤ 0
       never becomes ready and never causes a division-by-zero or crash) in
       `TEST/ZeroSpeedTest.kt`
-- [ ] T018 KDoc pass on all public `schedule` package files (surface listed in
+- [X] T018 KDoc pass on all public `schedule` package files (surface listed in
       contracts/scheduler-api.md)
-- [ ] T019 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;
+- [X] T019 Run quickstart validation: `./gradlew :core:allTests` green on JVM+JS;
       update `specs/003-turn-scheduler/quickstart.md` mapping table if any test file
       names drifted
 
