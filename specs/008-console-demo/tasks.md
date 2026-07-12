@@ -197,12 +197,12 @@ null`), at least one `LimitBreakUsed`, and at least one `SynergyTriggered` or
 
 ### Tests for User Story 3 (write first, must fail) ⚠️
 
-- [ ] T020 [US3] Write the failing scripted full-playthrough test described above in
+- [X] T020 [US3] Write the failing scripted full-playthrough test described above in
       `DEMO-TEST/BattleLoopPlaythroughTest.kt`
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] Extend `runBattleLoop`'s human-turn command parser to recognize a
+- [X] T021 [US3] Extend `runBattleLoop`'s human-turn command parser to recognize a
       limit-break submission and a summon submission (by id), routing them through
       `resolveLimitBreak`/`resolveSummon` and `eventsFromLimitBreak`/`eventsFromSummon`
       with the same rejection-reprompt handling as T010, updating `gauges`/`resources`
@@ -215,9 +215,9 @@ provably exercises every mechanic specs 001-007 built.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T022 [P] KDoc pass on all public `core`/`content`/`demo-console` additions from
+- [X] T022 [P] KDoc pass on all public `core`/`content`/`demo-console` additions from
       this feature (surface listed in contracts/console-demo-api.md)
-- [ ] T023 Run quickstart validation: `:core:allTests`, `:content:allTests`,
+- [X] T023 Run quickstart validation: `:core:allTests`, `:content:allTests`,
       `:demo-console:allTests` green (JVM+JS for the first two, JVM-only for the
       third), then `:build` green for the whole project; update
       `specs/008-console-demo/quickstart.md`'s mapping table if any test file names
