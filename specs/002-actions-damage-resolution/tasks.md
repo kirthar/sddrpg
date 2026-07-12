@@ -26,7 +26,7 @@ so they are sequenced in spec order but the MVP checkpoint is after both.
 
 ## Phase 1: Setup
 
-- [ ] T001 [P] Add reusable action-testing fixtures (a small `ValidatedCatalog` +
+- [X] T001 [P] Add reusable action-testing fixtures (a small `ValidatedCatalog` +
       `Roster` — two characters of different classes/elemental affinities, one enemy —
       following spec 001's `RosterFixtures.kt` pattern) in `TEST/ActionFixtures.kt`
 
@@ -40,23 +40,23 @@ resolution logic yet — that's built incrementally in US1–US3.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 [P] Write failing tests for `HealthTrack`/`BattleCombatant.isDefeated`/
+- [X] T002 [P] Write failing tests for `HealthTrack`/`BattleCombatant.isDefeated`/
       `BattleState` and `Roster.toBattleState()` (maximum captured from
       `combatant.stats[HP]`, current starts equal to maximum, one entry per combatant)
       in `TEST/BattleStateTest.kt`
-- [ ] T003 [P] Write failing tests for `DamageFormula.rawMagnitude` (`Physical`/
+- [X] T003 [P] Write failing tests for `DamageFormula.rawMagnitude` (`Physical`/
       `Magical`/`Fixed`; floors at 0 when defense/resistance exceeds power+offense —
       never negative) in `TEST/DamageFormulaTest.kt`
-- [ ] T004 Implement `HealthTrack`, `BattleCombatant`, `BattleState`, and
+- [X] T004 Implement `HealthTrack`, `BattleCombatant`, `BattleState`, and
       `Roster.toBattleState()` in `MAIN/BattleState.kt` (research R1; does not modify
       `Combatant`)
-- [ ] T005 [P] Implement `TargetingShape` enum (`SINGLE_ALLY`, `SINGLE_ENEMY`, `SELF`,
+- [X] T005 [P] Implement `TargetingShape` enum (`SINGLE_ALLY`, `SINGLE_ENEMY`, `SELF`,
       `ALL_ALLIES`, `ALL_ENEMIES`, `ALL`) in `MAIN/TargetingShape.kt`
-- [ ] T006 [P] Implement `EffectKind` enum and sealed `DamageFormula` (`Physical`,
+- [X] T006 [P] Implement `EffectKind` enum and sealed `DamageFormula` (`Physical`,
       `Magical`, `Fixed`) with `rawMagnitude` flooring at 0 in `MAIN/DamageFormula.kt`
-- [ ] T007 Implement `CombatAction` data class in `MAIN/CombatAction.kt` (depends on
+- [X] T007 Implement `CombatAction` data class in `MAIN/CombatAction.kt` (depends on
       T005, T006 for its `targeting`/`formula` fields)
-- [ ] T008 [P] Implement `ActionError` sealed interface, `ResolutionOutcome`, and
+- [X] T008 [P] Implement `ActionError` sealed interface, `ResolutionOutcome`, and
       `ActionResolutionResult` sealed interface (data shapes only, per
       contracts/action-api.md) in `MAIN/ActionResolution.kt`
 
@@ -76,21 +76,21 @@ the target's health decreases by exactly that amount.
 
 ### Tests for User Story 1 (write first, must fail) ⚠️
 
-- [ ] T009 [P] [US1] Write failing unit tests for `roundHalfAwayFromZero` (ties away
+- [X] T009 [P] [US1] Write failing unit tests for `roundHalfAwayFromZero` (ties away
       from zero on both positive and negative values) in `TEST/RoundingTest.kt`
-- [ ] T010 [P] [US1] Write failing unit tests for the fixed elemental multiplier table
+- [X] T010 [P] [US1] Write failing unit tests for the fixed elemental multiplier table
       applied to a signed delta (NEUTRAL/WEAKNESS/RESISTANCE/IMMUNITY/ABSORPTION, on
       both a DAMAGE-signed and a HEAL-signed input) in `TEST/ElementalAdjustmentTest.kt`
-- [ ] T011 [P] [US1] Write failing acceptance tests for US1 scenarios 1–6 (neutral
+- [X] T011 [P] [US1] Write failing acceptance tests for US1 scenarios 1–6 (neutral
       attack matches the base formula; weakness/resistance/immunity/absorption on a
       real `BattleState` via `resolveAction`; identical inputs resolved twice produce
       an identical `Resolved` result) in `TEST/BasicAttackResolutionTest.kt`
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Implement `roundHalfAwayFromZero` and the fixed multiplier table +
+- [X] T012 [US1] Implement `roundHalfAwayFromZero` and the fixed multiplier table +
       apply function in `MAIN/ElementalAdjustment.kt` (research R4/R5)
-- [ ] T013 [US1] Implement `resolveAction` in `MAIN/ActionResolution.kt`: minimal
+- [X] T013 [US1] Implement `resolveAction` in `MAIN/ActionResolution.kt`: minimal
       actor/target existence check, then per validated target — `rawMagnitude` →
       signed `baseDelta` → elemental adjustment (if `element != null`) → clamp to
       `[0, maximum]` → updated `HealthTrack` → `ResolutionOutcome` → new `BattleState`
