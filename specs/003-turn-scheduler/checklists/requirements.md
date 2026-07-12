@@ -42,3 +42,9 @@
 - Given a fully green checklist, `/speckit-clarify` is optional for this spec. Proceed
   either way — run it to double-check no hidden ambiguity survived, or go straight to
   `/speckit-plan`.
+- `/speckit-analyze` (post-tasks) found 0 critical, 1 MEDIUM, 2 LOW findings. The
+  MEDIUM (tasks.md T010/T016 contradicted each other on whether tie-break selection
+  exists before US3) was remediated: T010 now implements the participants-order pick
+  from the start, T016 is confirmation-only. The two LOWs (SC-006 extensibility not
+  task-verified; T001's fixture doesn't anticipate T014's equal-speed need) are
+  non-blocking, same as spec 002's analogous LOW findings.

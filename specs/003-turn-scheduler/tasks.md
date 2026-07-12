@@ -85,11 +85,15 @@ offered turns more often, with the schedule visibly advancing after each consump
 ### Implementation for User Story 1
 
 - [ ] T010 [US1] Implement `ActiveTimeBattleScheduler.nextTurn`'s tick-jump algorithm
-      for the no-defeat, no-tie case: per-candidate `ceilDiv` ticks-needed, `minTicks`,
-      advance every candidate's readiness by `minTicks * speed`, pick the (single)
-      combatant whose advanced readiness reaches `READY_THRESHOLD` — **must guard
-      `speed <= 0` out of candidacy before calling `ceilDiv`** (division-by-zero
-      safety, research R2/spec edge case) in `MAIN/ActiveTimeBattleScheduler.kt`
+      for the no-defeat case: per-candidate `ceilDiv` ticks-needed, `minTicks`, advance
+      every candidate's readiness by `minTicks * speed`, then pick the winner among all
+      candidates whose advanced readiness reaches `READY_THRESHOLD` **using the
+      participants-order tie-break rule from the start** (research R3: `minByOrNull`
+      on index in `battle.participants` — correct and no more code whether one or
+      several candidates qualify, so there is no separate "no-tie case" to special-case)
+      — **must guard `speed <= 0` out of candidacy before calling `ceilDiv`**
+      (division-by-zero safety, research R2/spec edge case) in
+      `MAIN/ActiveTimeBattleScheduler.kt`
 - [ ] T011 [US1] Implement `ActiveTimeBattleScheduler.markSpent` (subtract
       `READY_THRESHOLD` from the named combatant's readiness, carrying over any
       overshoot rather than resetting to `0`, research R2) in
@@ -151,10 +155,10 @@ verify both runs produce the identical turn order with the same tie resolution.
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] Implement/verify tie-break selection by `battle.participants` index
-      order among candidates that reach `READY_THRESHOLD` in the same `minTicks` step
-      (research R3) in `MAIN/ActiveTimeBattleScheduler.kt` — likely already correct
-      from T010's selection logic; this task closes any gap T014 surfaces
+- [ ] T016 [US3] No new implementation expected: T010 already implements tie-break
+      selection by `battle.participants` index order (research R3) as part of its
+      single winner-selection step, so this task is confirmation — run T014/T015 and
+      fix `MAIN/ActiveTimeBattleScheduler.kt` only if either test surfaces a real gap
 
 **Checkpoint**: All three user stories independently green.
 
