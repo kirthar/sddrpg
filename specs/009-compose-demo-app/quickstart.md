@@ -10,6 +10,9 @@
   (`sdk.dir=/opt/android-sdk`, uncommitted/gitignored).
 - Network access to Google Maven (`dl.google.com`) and Maven Central for the new
   Compose/AGP artifacts (verified reachable through this environment's proxy).
+- Binaryen (`wasm-opt`) on the PATH for the *production* web build in this
+  environment (`npm install -g binaryen` — the Kotlin toolchain's own GitHub
+  download is blocked here; see research R9). Not needed on GitHub runners.
 
 ## Run the validation suite
 

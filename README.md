@@ -12,7 +12,7 @@ Multiplatform, developed end-to-end with **Spec-Driven Development** using
 | `content` | specs 007-008 implemented | Content definitions (classes, skills, spells, enemies…) + loaders — `loadContentPack` parses/validates a full content pack, including cross-catalog reference checks; the shipped demo content's own action definitions (`DemoActionDefinition`/`DEMO_ACTIONS`) and playable roster assembly (`buildDemoBattleState`) |
 | `demo-console` | spec 008 implemented | JVM console demo (Final Fantasy-style) — the first end-to-end validation of specs 001-007 working together: a complete, watchable, playable battle from start to victory/defeat |
 | `tactical` | reserved slot | Optional grid-positioning module (future milestone, not a Gradle module yet) |
-| `demo-app` | reserved slot | Compose Multiplatform app for Android/web (future milestone) |
+| `demo-app` | spec 009 implemented | Compose Multiplatform battle UI (Android APK + web/wasmJs + desktop) — the same shipped demo battle, playable by touch/click via an event-driven `BattleController` over the unmodified engine |
 
 Dependency direction: `demo-*` → `content` → `core`. See
 [.specify/memory/constitution.md](.specify/memory/constitution.md) for the project
@@ -67,11 +67,31 @@ Specs live under `specs/`. Planned spec sequence:
    enemy could ever act) via `Combatant` interface delegation in `content`, without
    touching any spec 001-007 file. This completes the originally-planned 8-spec
    roadmap for `core` + `content` + `demo-console`.
+9. **009 — Compose demo app** ✅ *(implemented)*: `demo-app` becomes a real Compose
+   Multiplatform module — the same shipped demo battle through a graphical
+   touch/click screen (health bars, scrolling event log, action buttons, target
+   picker with cancel, victory/defeat overlay). The central piece is
+   `BattleController`, an event-driven, UI-framework-free inversion of the console
+   demo's blocking loop: the UI observes an immutable `uiState` value and pushes
+   submissions in, while automatic turns advance internally with spec 008's exact
+   per-turn bookkeeping — no coroutines, fully kotest-tested with zero UI. Targets:
+   Android (installable debug APK), web/wasmJs (static site, deployable to GitHub
+   Pages via `.github/workflows/deploy-pages.yml`), desktop/JVM (test host + dev
+   app). `core`/`content` gained a `wasmJs` target declaration (build files only,
+   zero source changes) so the web target can consume them — their kotest suites
+   now run on a third platform.
 
 ## Build
 
 ```bash
-./gradlew build   # compiles all modules and runs the kotest suite
+./gradlew build                                # all modules + the kotest suites
+./gradlew :demo-app:assembleDebug              # the installable Android APK
+./gradlew :demo-app:wasmJsBrowserDistribution  # the deployable web build
+./gradlew :demo-app:run                        # desktop dev app
 ```
 
-Toolchain: Kotlin 2.4.0, Gradle 8.14.3, JDK 21, kotest 6, kotlinx.serialization.
+Android builds need an SDK (`local.properties` with `sdk.dir=...`, platform 36).
+Web deploys to GitHub Pages once the owner enables Pages (Source = GitHub Actions).
+
+Toolchain: Kotlin 2.4.0, Gradle 8.14.3, JDK 21, kotest 6, kotlinx.serialization,
+Compose Multiplatform 1.11.1, AGP 8.13.2.

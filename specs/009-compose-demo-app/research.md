@@ -169,3 +169,30 @@ same surface the UI consumes.
 **Rationale**: Same fast, deterministic test discipline as specs 001-008; the
 desktop target exists chiefly to host these tests (spec Assumptions) and doubles as
 a dev-run app for free.
+
+## R9 (added during implementation): three environment/toolchain findings
+
+1. **`core`/`content` must declare the `wasmJs` target.** A KMP library must
+   declare every platform its consumers compile for -- `demo-app`'s wasmJs target
+   could not resolve `project(":core")`/`project(":content")` until both declared
+   `wasmJs { nodejs() }`. Build-file target declaration only, zero source changes
+   (FR-008 was amended to make this carve-out explicit). Every dependency already
+   publishes wasm-js variants (kotest 6.2.2, kotlinx-serialization 1.11.0 --
+   verified live), and both modules' full kotest suites now run green on wasmJs as
+   a third platform, strengthening the determinism evidence.
+2. **Binaryen (wasm-opt) cannot be downloaded in this environment.** The Kotlin
+   toolchain fetches it from GitHub releases, which this session's proxy blocks
+   (403 -- GitHub access is scoped to the project repository only). Resolved by
+   installing binaryen from npm (`npm install -g binaryen`, the allowed registry)
+   and setting `BinaryenEnvSpec.download = false` for all projects in the root
+   build (the same pattern as the existing Node.js download opt-out; note
+   `BinaryenPlugin` applies per-subproject, unlike the Node root plugins). On
+   GitHub runners (the Pages workflow) the default download works -- the opt-out
+   only redirects *where* binaryen comes from, locally to the system PATH.
+3. **AGP 8.13's embedded Kotlin (2.2.x) cannot consume Kotlin 2.4.0 binaries.**
+   Android unit-test compilation and Android lint both run on AGP's embedded
+   Kotlin and fail against this project's 2.4.0 metadata. Both are disabled for
+   `demo-app` (`UnitTest*`/`lint*` tasks) -- consistent with research R8's
+   already-decided testing strategy (the kotest suite runs on the desktop target;
+   Android unit tests would only duplicate it on a slower host). The APK build
+   itself (KGP-compiled) is unaffected.

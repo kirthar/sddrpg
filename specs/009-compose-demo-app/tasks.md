@@ -30,12 +30,12 @@ US1+US2 already working).
 
 ## Phase 1: Setup
 
-- [ ] T001 Root build wiring: add `google()` to `pluginManagement`/`dependencyResolutionManagement`
+- [X] T001 Root build wiring: add `google()` to `pluginManagement`/`dependencyResolutionManagement`
       repositories and `include(":demo-app")` in `settings.gradle.kts`; add version-catalog
       entries (compose 1.11.1, kotlin-compose-compiler 2.4.0 via kotlin ref, agp 8.13.2,
       activity-compose 1.13.0) in `gradle/libs.versions.toml`; add `local.properties` to
       `.gitignore`; create uncommitted `local.properties` with `sdk.dir=/opt/android-sdk`
-- [ ] T002 Create `demo-app/build.gradle.kts`: KMP module with `androidTarget()`
+- [X] T002 Create `demo-app/build.gradle.kts`: KMP module with `androidTarget()`
       (application id `io.github.kirthar.sddrpg.demo.app`, compileSdk/targetSdk 36,
       minSdk 24), `jvm("desktop")` (mainClass for `:demo-app:run` via compose desktop
       application block), `wasmJs { browser(); binaries.executable() }`; plugins
@@ -54,15 +54,15 @@ user stories' controller work depends on. No controller/UI logic yet.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T003 [P] Write failing tests for `EventText` (every `BattleEvent` subtype —
+- [X] T003 [P] Write failing tests for `EventText` (every `BattleEvent` subtype —
       `DamageDealt`/`HealingApplied` with and without actor, `StatusEffectApplied`,
       `StatusEffectExpired`, `CombatantDefeated`, `TurnGranted`, `SynergyTriggered`,
       `GaugeFull`, `LimitBreakUsed`, `SummonCast` — plus `ActionError`/`LimitBreakError`/
       `SummonError` rejection wording; names resolved from the battle, never raw ids)
       in `APP-TEST/EventTextTest.kt`
-- [ ] T004 Implement `BattleUiState`, `ParticipantView`, `BattlePhase`, `OfferedAction`,
+- [X] T004 Implement `BattleUiState`, `ParticipantView`, `BattlePhase`, `OfferedAction`,
       `PlayerChoice` value types (per data-model.md) in `APP-MAIN/BattleUiState.kt`
-- [ ] T005 Implement `EventText` (`BattleEvent.toDisplayText`, `ActionError.toDisplayText`,
+- [X] T005 Implement `EventText` (`BattleEvent.toDisplayText`, `ActionError.toDisplayText`,
       `LimitBreakError.toDisplayText`, `SummonError.toDisplayText`) in `APP-MAIN/EventText.kt`
 
 **Checkpoint**: `:demo-app:desktopTest` green — foundation ready.
@@ -83,27 +83,27 @@ outcome, with zero UI involved.
 
 ### Tests for User Story 1 (write first, must fail) ⚠️
 
-- [ ] T006 [US1] Write failing tests for construction & phases (after construction the
+- [X] T006 [US1] Write failing tests for construction & phases (after construction the
       phase is `AwaitingPlayerAction` for a human-controlled actor with the leading
       auto-turns' events already logged; `participants` snapshots match the raw battle
       state; a valid submission resolves and advances to the next human turn; the
       phase becomes `BattleOver` the moment one side is wiped; `submit` in `BattleOver`
       is a no-op) in `APP-TEST/BattleControllerTest.kt`
-- [ ] T007 [US1] Write failing tests for gating (a structurally invalid choice sets
+- [X] T007 [US1] Write failing tests for gating (a structurally invalid choice sets
       `lastRejection` with readable text and changes nothing else — same actor, same
       phase, turn not consumed; the next valid submission succeeds and clears
       `lastRejection`; limit break/summon offerability appears in `actions` iff the
       engine would accept them — gauge below threshold or insufficient MP means the
       button is absent; offered `targets` never include defeated combatants for
       single-target shapes) in `APP-TEST/BattleControllerTest.kt`
-- [ ] T008 [P] [US1] Write a failing determinism test (two controllers over equal
+- [X] T008 [P] [US1] Write a failing determinism test (two controllers over equal
       sessions fed the identical submission sequence produce equal `uiState` values —
       log lines, participants, phase — at every step, and the identical outcome) in
       `APP-TEST/BattleControllerDeterminismTest.kt`
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] Implement `DemoSession` + `newDemoSession()` and `BattleController`
+- [X] T009 [US1] Implement `DemoSession` + `newDemoSession()` and `BattleController`
       (constructor auto-advance; `submit` with resolveAction/resolveLimitBreak/
       resolveSummon gating; spec 008's bookkeeping order per research R4 — events,
       status application from `appliesStatusEffect`, synergies, gauge charging, one
@@ -129,7 +129,7 @@ exactly the observable surface (no extra channels).
 
 ### Tests for User Story 2 (write first, must fail) ⚠️
 
-- [ ] T010 [US2] Write failing tests for log/display consistency (every submission
+- [X] T010 [US2] Write failing tests for log/display consistency (every submission
       strictly appends to `logLines`; each turn's occurrences appear in bookkeeping
       order; after every state change the `participants` health equals the raw
       battle state the last logged occurrences describe; a status application, tick,
@@ -138,7 +138,7 @@ exactly the observable surface (no extra channels).
 
 ### Implementation for User Story 2
 
-- [ ] T011 [US2] Implement `BattleScreen` (two side-grouped participant panels with
+- [X] T011 [US2] Implement `BattleScreen` (two side-grouped participant panels with
       name + HP bar; `LazyColumn` log auto-scrolled to the newest line; action button
       row only in `AwaitingPlayerAction`; target-picker second step whose cancel
       returns to action selection without consuming the turn — local UI state only;
@@ -159,23 +159,23 @@ optional Pages workflow.
 
 ### Implementation for User Story 3
 
-- [ ] T012 [P] [US3] Write a failing full-playthrough test (scripted submissions
+- [X] T012 [P] [US3] Write a failing full-playthrough test (scripted submissions
       through the controller exercising a status tick, a limit break, a synergy or
       summon, ending in Victory/Defeat — US3's "the same battle everywhere" is
       backed by the shared controller, so this is its reachability proof) in
       `APP-TEST/BattleControllerPlaythroughTest.kt`
-- [ ] T013 [P] [US3] Implement the Android entry point (`MainActivity` +
+- [X] T013 [P] [US3] Implement the Android entry point (`MainActivity` +
       `AndroidManifest.xml`) in `demo-app/src/androidMain/`
-- [ ] T014 [P] [US3] Implement the desktop entry point (`main()` `Window` wiring
+- [X] T014 [P] [US3] Implement the desktop entry point (`main()` `Window` wiring
       `BattleScreen`) in `demo-app/src/desktopMain/kotlin/io/github/kirthar/sddrpg/demo/app/Main.kt`
-- [ ] T015 [P] [US3] Implement the web entry point (`main()` `ComposeViewport` +
+- [X] T015 [P] [US3] Implement the web entry point (`main()` `ComposeViewport` +
       `index.html` host page) in `demo-app/src/wasmJsMain/`
-- [ ] T016 [US3] Produce and verify the deliverables: `:demo-app:assembleDebug` →
+- [X] T016 [US3] Produce and verify the deliverables: `:demo-app:assembleDebug` →
       APK exists under `demo-app/build/outputs/apk/debug/`;
       `:demo-app:wasmJsBrowserDistribution` → static site under
       `demo-app/build/dist/wasmJs/productionExecutable/`; send the APK to the user
       (never commit it)
-- [ ] T017 [P] [US3] Add the optional GitHub Pages workflow (build
+- [X] T017 [P] [US3] Add the optional GitHub Pages workflow (build
       `wasmJsBrowserDistribution`, upload-pages-artifact, deploy-pages; triggers:
       default-branch push + workflow_dispatch) in `.github/workflows/deploy-pages.yml`
 
@@ -185,9 +185,9 @@ optional Pages workflow.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T018 [P] KDoc pass on all public `demo-app` additions (surface listed in
+- [X] T018 [P] KDoc pass on all public `demo-app` additions (surface listed in
       contracts/demo-app-api.md)
-- [ ] T019 Run quickstart validation: `:demo-app:desktopTest` green, whole-project
+- [X] T019 Run quickstart validation: `:demo-app:desktopTest` green, whole-project
       `gradle build` green, both deliverables reproducible; update
       `specs/009-compose-demo-app/quickstart.md` if any names drifted; update root
       `README.md` (module table: `demo-app` implemented; roadmap: milestone 009;

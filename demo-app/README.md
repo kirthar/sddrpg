@@ -1,7 +1,17 @@
-# demo-app (future milestone)
+# demo-app
 
-Compose Multiplatform demo application (Android + web) consuming `core` and `content`.
+Compose Multiplatform demo application (Android + web/wasmJs + desktop) consuming
+`core` and `content` — implemented by spec 009 (`specs/009-compose-demo-app/`).
 
-Not started — per the project constitution, `demo-app` only begins after `demo-console`
-has validated the engine end-to-end. This directory is a placeholder and is intentionally
-**not** included in `settings.gradle.kts`.
+- `BattleController` (commonMain): event-driven battle session controller — the UI
+  observes `uiState` and calls `submit`; automatic turns advance internally.
+- `ui/BattleScreen.kt` (commonMain): the single shared battle screen.
+- Entry points: `MainActivity` (Android), `Main.kt` (desktop window), `Main.kt` +
+  `index.html` (wasmJs browser).
+
+```bash
+./gradlew :demo-app:desktopTest                # kotest suite (UI-free, deterministic)
+./gradlew :demo-app:assembleDebug              # installable debug APK
+./gradlew :demo-app:wasmJsBrowserDistribution  # static web build (GitHub Pages ready)
+./gradlew :demo-app:run                        # desktop dev app
+```

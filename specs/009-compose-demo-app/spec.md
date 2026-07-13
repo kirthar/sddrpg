@@ -173,9 +173,15 @@ full battle by touch; open the deployed web page in a browser and do the same.
   derivation, synergy detection/bonus, limit-gauge charging, one status tick per
   granted turn, effective-state derivation before the next turn).
 - **FR-008**: This feature MUST consume specs 001-008's published behavior exactly
-  as-is: zero changes to any existing file in `core`, `content`, or `demo-console`.
-  The only permitted changes outside the new module are the root build wiring that
-  registers the module (build infrastructure, not spec artifacts).
+  as-is: zero changes to any existing *source* file in `core`, `content`, or
+  `demo-console`. The only permitted changes outside the new module are build
+  infrastructure (not spec artifacts): the root build wiring that registers the
+  module, and — a constraint discovered during implementation — declaring the web
+  platform target in `core`/`content`'s build files, since a multiplatform library
+  must declare every platform its consumers compile for. Target declarations add a
+  compilation platform to unchanged common code; no source line of any earlier spec
+  changes, and their existing suites must stay green on every platform including
+  the new one.
 - **FR-009**: Everything that affects the battle's outcome MUST be fully
   deterministic: the same starting content and the same sequence of player choices
   MUST always produce the identical sequence of occurrences and the identical

@@ -12,6 +12,12 @@ kotlin {
     js {
         nodejs()
     }
+    // Declared so demo-app's wasmJs target can consume this library (spec 009);
+    // a KMP library must declare every platform its consumers compile for.
+    // Target declaration only -- zero source changes.
+    wasmJs {
+        nodejs()
+    }
 
     sourceSets {
         commonMain.dependencies {
